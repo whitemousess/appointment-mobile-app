@@ -16,7 +16,7 @@ function AppStack() {
           height: 60,
         },
         tabBarInactiveTintColor: "#000",
-        tabBarActiveTintColor: "#D83752",
+        tabBarActiveTintColor: "#3468C0",
       }}
     >
       <Tab.Screen

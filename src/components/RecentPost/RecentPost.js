@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import ListItem from "./ListItem";
 import ButtonPost from "../PostStatus/ButtonPost";
@@ -9,6 +9,12 @@ function RecentPost({ data = [] }) {
   const { currentInfo } = useContext(AuthContext);
   const [moreData, setMoreData] = useState(data.slice(0, 5));
   const [showMore, setShowMore] = useState(true);
+
+  useEffect(() => {
+    if (data.length === 0) {
+      setShowMore(false);
+    }
+  }, []);
 
   const handleLoadMore = () => {
     const currentLength = moreData.length;
@@ -20,7 +26,10 @@ function RecentPost({ data = [] }) {
   };
 
   return (
-    <View style={{ marginHorizontal: 10 }}>
+    <View style={{ marginHorizontal: 10,marginTop: 10, borderTopWidth: 1,borderColor: "#ccc" }}>
+      <Text style={{ fontSize: 16, fontWeight: "bold", marginTop: 10 }}>
+        Bài viết
+      </Text>
       {currentInfo.role === 1 && <ButtonPost />}
       {moreData.map((item) => (
         <ListItem key={item.id} data={item} />

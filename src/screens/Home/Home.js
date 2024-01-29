@@ -6,12 +6,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import ItemDoctor from "./ItemDoctor";
 import RecentPost from "~/components/RecentPost";
 import Doctor from "~/assets/img/doctor.jpg";
 import HeaderScreen from "~/components/HeaderScreen";
-import { useNavigation } from "@react-navigation/native";
 
 function Home() {
   const navigation = useNavigation();
@@ -190,10 +190,6 @@ function Home() {
           </TouchableOpacity>
         </View>
         <ItemDoctor data={dataDoctor} />
-
-        <Text style={{ fontSize: 16, fontWeight: "bold", marginTop: 10 }}>
-          Bài viêt
-        </Text>
 
         <RecentPost data={dataPost} />
       </ScrollView>

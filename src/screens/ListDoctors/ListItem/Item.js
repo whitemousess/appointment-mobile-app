@@ -1,8 +1,10 @@
+import { useNavigation } from "@react-navigation/native";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 import Doctor from "~/assets/img/doctor.jpg";
 
 function Item() {
+  const navigation = useNavigation();
   return (
     <View
       style={{
@@ -15,12 +17,19 @@ function Item() {
         borderRadius: 16,
       }}
     >
-      <View style={{ width: "40%" }}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("DetailDoctor", {
+            doctorId: 1,
+          })
+        }
+        style={{ width: "40%" }}
+      >
         <Image
           source={Doctor}
           style={{ width: 140, height: 140, borderRadius: 9999 }}
         />
-      </View>
+      </TouchableOpacity>
       <View style={{ width: "60%" }}>
         <Text style={{ fontSize: 20, fontWeight: "500" }}>Họ tên</Text>
         <Text>Chuyên khoa</Text>

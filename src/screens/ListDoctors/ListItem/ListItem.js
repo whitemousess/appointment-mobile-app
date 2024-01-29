@@ -4,7 +4,7 @@ import Item from "./Item";
 import Doctor from "~/assets/img/doctor.jpg";
 import { useState } from "react";
 
-function ListItem({onScroll}) {
+function ListItem({ onScroll }) {
   const data = [
     {
       id: 1,
@@ -51,15 +51,11 @@ function ListItem({onScroll}) {
   ];
 
   const [moreData, setMoreData] = useState(data.slice(0, 5));
-  const [showMore, setShowMore] = useState(true);
 
   const handleLoadMore = () => {
     const currentLength = moreData.length;
     const nextData = data.slice(currentLength, currentLength + 5);
     setMoreData([...moreData, ...nextData]);
-    if (currentLength + nextData.length >= data.length) {
-      setShowMore(false);
-    }
   };
 
   const renderItem = (item) => {
