@@ -19,7 +19,7 @@ function DetailDoctor() {
 
   return (
     <SafeView>
-      <ScrollView>
+      <ScrollView style={{ height: "100%" }}>
         <Header />
         <RecentPost />
       </ScrollView>

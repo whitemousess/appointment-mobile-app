@@ -84,6 +84,51 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const editProfile = (data) => {
+    const validateEmail = (email) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    };
+    if (data.password !== data.rePassword) {
+      Toast.show({
+        type: "error",
+        text1: "Mật khẩu không trùng khớp",
+      });
+    } else if (validateEmail(data.email)) {
+      console.log(data);
+      // userService
+      //   .register({ data })
+      //   .then((res) => {
+      //     if (res.data) {
+      //       Toast.show({
+      //         type: "success",
+      //         text1: "Thay đổi thành công",
+      //       });
+      //     } else if (res.response.data.error.keyPattern.username) {
+      //       Toast.show({
+      //         type: "error",
+      //         text1: "không thể Thay đổi",
+      //         text2: "Tài khoản đã tồn tại",
+      //       });
+      //       navigator("");
+      //     } else if (res.response.data.error.keyPattern.email) {
+      //       Toast.show({
+      //         type: "error",
+      //         text1: "không thể Thay đổi",
+      //         text2: "Email đã tồn tại",
+      //       });
+      //     }
+      //   })
+      //   .catch((err) => console.log(err));
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "Email không hợp lệ",
+        text2: "Vui lòng nhập đúng email",
+      });
+    }
+  };
+
   const logOut = () => {
     setToken("");
     setDoctor(false);
@@ -98,7 +143,7 @@ export const AuthProvider = ({ children }) => {
       setIsLoading(true);
       const UserInfo = await AsyncStorage.getItem("currentUser");
       const Token = await AsyncStorage.getItem("token");
-      
+
       if (Token) {
         setToken(Token);
         setCurrentInfo(JSON.parse(UserInfo));
@@ -129,6 +174,7 @@ export const AuthProvider = ({ children }) => {
         isLoading,
         login,
         register,
+        editProfile,
         logOut,
       }}
     >

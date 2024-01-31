@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { StatusBar, Text, View } from "react-native";
 import HeaderScreen from "~/components/HeaderScreen";
 import ListItem from "./ListItem";
 import Diseases from "./Diseases";
@@ -17,9 +17,17 @@ function ListDoctors() {
   };
 
   return (
-    <View style={{ marginBottom: visibleHeader && 100 }}>
+    <View
+      style={{
+        marginBottom: (visibleHeader && StatusBar.currentHeight + 100),
+      }}
+    >
       {!visibleHeader && <HeaderScreen />}
-      <Diseases />
+      <View
+        style={{ paddingTop: (visibleHeader && StatusBar.currentHeight)}}
+      >
+        <Diseases />
+      </View>
       <ListItem onScroll={onScroll} />
     </View>
   );

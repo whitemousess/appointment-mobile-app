@@ -27,7 +27,7 @@ function InputCustom({
         marginBottom: 15,
         padding: 4,
           borderWidth: 1,
-          borderColor: "#DDDDDD",
+          borderColor: "#e9e9e9",
           borderRadius: 10,
         ...isEmpty,
       }}
@@ -53,7 +53,7 @@ function InputCustom({
         style={{
           flex: 1,
           fontSize: 16,
-          padding: 8
+          padding: 8,
         }}
         keyboardType={keyboardType}
       />

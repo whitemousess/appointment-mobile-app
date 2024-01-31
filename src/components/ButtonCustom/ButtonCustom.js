@@ -1,13 +1,15 @@
 import { Text, TouchableOpacity } from "react-native";
 
-function ButtonCustom({ label, onPress }) {
+function ButtonCustom({ label, onPress ,warning}) {
   return (
     <TouchableOpacity
       onPress={onPress}
       style={{
-        padding: 20,
+        padding: 16,
         borderRadius: 10,
         borderWidth: 1,
+        borderColor: warning? "red" : "#000",
+        
       }}
       activeOpacity={1}
     >

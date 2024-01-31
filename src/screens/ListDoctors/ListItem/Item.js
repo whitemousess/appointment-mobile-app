@@ -35,7 +35,6 @@ function Item() {
         <Text>Chuyên khoa</Text>
         <Text>Địa chỉ</Text>
         <TouchableOpacity
-          activeOpacity={0.6}
           style={{
             width: "100%",
             position: "absolute",
@@ -45,6 +44,8 @@ function Item() {
             borderRadius: 16,
             paddingVertical: 10,
           }}
+          activeOpacity={0.6}
+          onPress={() => navigation.navigate("Appointment")}
         >
           <Text style={{ textAlign: "center" }}>Đặt lịch</Text>
         </TouchableOpacity>

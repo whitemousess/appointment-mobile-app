@@ -1,12 +1,12 @@
 import { EvilIcons, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useContext } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, StatusBar, Text, TouchableOpacity, View } from "react-native";
 
 import { AuthContext } from "~/shared/AuthProvider";
 
 function HeaderScreen() {
-  const { currentInfo, doctor } = useContext(AuthContext);
+  const { currentInfo } = useContext(AuthContext);
   const navigation = useNavigation();
 
   return (
@@ -18,18 +18,12 @@ function HeaderScreen() {
         alignItems: "center",
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
-        paddingTop: 24,
+        paddingTop: StatusBar.currentHeight || 24,
         paddingBottom: 10,
         paddingHorizontal: 10,
       }}
     >
-      <TouchableOpacity
-        activeOpacity={1}
-        onPress={() => {
-          doctor && navigation.navigate("Profile");
-        }}
-        style={{ flexDirection: "row", alignItems: "center" }}
-      >
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
         {currentInfo.imageUrl ? (
           <Image
             source={{ uri: currentInfo.imageUrl }}
@@ -39,7 +33,7 @@ function HeaderScreen() {
           <EvilIcons name="user" size={50} color="white" />
         )}
         <Text style={{ marginLeft: 10 }}>{currentInfo.fullName}</Text>
-      </TouchableOpacity>
+      </View>
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => navigation.navigate("Chat")}

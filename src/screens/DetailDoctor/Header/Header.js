@@ -1,6 +1,9 @@
+import { useNavigation } from "@react-navigation/native";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 function Header() {
+  const navigation = useNavigation();
+
   return (
     <View style={{ marginHorizontal: 10 }}>
       <View style={{ flexDirection: "column", alignItems: "center" }}>
@@ -26,7 +29,9 @@ function Header() {
           marginHorizontal: 16,
         }}
       >
-        <Text style={{ textAlign: "center" }}>Đặt lịch hẹn</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Appointment")}>
+          <Text style={{ textAlign: "center" }}>Đặt lịch hẹn</Text>
+        </TouchableOpacity>
       </TouchableOpacity>
     </View>
   );

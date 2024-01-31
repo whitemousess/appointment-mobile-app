@@ -20,6 +20,7 @@ function ListItem({ data }) {
           })
         }
         style={{ padding: 10, flexDirection: "row" }}
+        activeOpacity={0.8}
       >
         <Image
           source={data.imageUrl}
@@ -27,7 +28,14 @@ function ListItem({ data }) {
         />
         <Text style={{ fontWeight: "bold" }}>{data.Name}</Text>
       </TouchableOpacity>
-      <TouchableOpacity activeOpacity={1}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() =>
+          navigation.navigate("DetailPost", {
+            data: data,
+          })
+        }
+      >
         <Image source={data.imagePost} style={{ width: "auto", height: 400 }} />
         <View style={{ paddingVertical: 16, paddingHorizontal: 6 }}>
           <Text>{data.Status}</Text>
