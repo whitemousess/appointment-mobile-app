@@ -1,10 +1,12 @@
-import { FlatList, View } from "react-native";
+import { useCallback, useState } from "react";
+import { FlatList, RefreshControl } from "react-native";
 
 import Item from "./Item";
 import Doctor from "~/assets/img/doctor.jpg";
-import { useState } from "react";
 
 function ListItem({ onScroll }) {
+  const [refreshing, setRefreshing] = useState(false);
+
   const data = [
     {
       id: 1,
@@ -62,8 +64,16 @@ function ListItem({ onScroll }) {
     return <Item data={item} />;
   };
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
+
   return (
     <FlatList
+      style={{ height: "100%" }}
       data={moreData}
       renderItem={({ item }) => renderItem(item)}
       keyExtractor={(item) => item.id.toString()}
@@ -71,6 +81,9 @@ function ListItem({ onScroll }) {
       onEndReachedThreshold={0.1}
       showsVerticalScrollIndicator={false}
       onScroll={onScroll}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
     />
   );
 }

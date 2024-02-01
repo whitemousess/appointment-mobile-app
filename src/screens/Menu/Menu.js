@@ -39,7 +39,7 @@ function Menu() {
             borderWidth: 0.5,
             borderRadius: 5,
             paddingHorizontal: 10,
-            paddingVertical: 10,
+            paddingVertical: 16,
             marginHorizontal: 10,
             backgroundColor: "#B31312",
           }}
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   btnMenu: {
     borderWidth: 1,
     paddingHorizontal: 10,
-    paddingVertical: 10,
+    paddingVertical: 20,
     borderRadius: 10,
     marginVertical: 4,
     marginHorizontal: 10,

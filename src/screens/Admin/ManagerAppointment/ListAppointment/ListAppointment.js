@@ -1,23 +1,14 @@
-import { useCallback, useState } from "react";
 import { FlatList, RefreshControl } from "react-native";
 import Item from "./Item";
 
-function ListHistory({ data }) {
-  const [refreshing, setRefreshing] = useState(false);
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
-  }, []);
+function ListAppointment({ data, refreshing, onRefresh }) {
   const renderItem = (item) => {
     return <Item data={item} />;
   };
 
   return (
     <FlatList
-      style={{ height: "100%", marginHorizontal: 10, marginTop: 10 }}
+      style={{ height: "100%" }}
       data={data}
       renderItem={({ item }) => renderItem(item)}
       keyExtractor={(item) => item.id}
@@ -28,4 +19,4 @@ function ListHistory({ data }) {
   );
 }
 
-export default ListHistory;
+export default ListAppointment;

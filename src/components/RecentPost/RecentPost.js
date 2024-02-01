@@ -26,7 +26,14 @@ function RecentPost({ data = [] }) {
   };
 
   return (
-    <View style={{ marginHorizontal: 10,marginTop: 10, borderTopWidth: 1,borderColor: "#ccc" }}>
+    <View
+      style={{
+        marginHorizontal: 10,
+        marginTop: 10,
+        borderTopWidth: 1,
+        borderColor: "#ccc",
+      }}
+    >
       <Text style={{ fontSize: 16, fontWeight: "bold", marginTop: 10 }}>
         Bài viết
       </Text>
