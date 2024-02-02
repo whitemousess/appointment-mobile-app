@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   RefreshControl,
   ScrollView,
@@ -12,10 +12,12 @@ import ItemDoctor from "./ItemDoctor";
 import RecentPost from "~/components/RecentPost";
 import Doctor from "~/assets/img/doctor.jpg";
 import HeaderScreen from "~/components/HeaderScreen";
+import * as userService from "~/services/userService";
 
 function Home() {
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
+  const [dataDoctor, setDataDoctor] = useState([]);
 
   const dataPost = [
     {
@@ -116,43 +118,28 @@ function Home() {
     },
   ];
 
-  const dataDoctor = [
-    {
-      id: 1,
-      imageUrl: Doctor,
-      fullName: "Doctor",
-      specialist: "Khoa Thần kinh",
-    },
-    {
-      id: 2,
-      imageUrl: Doctor,
-      fullName: "Doctor",
-      specialist: "Khoa Thần kinh",
-    },
-    {
-      id: 3,
-      imageUrl: Doctor,
-      fullName: "Doctor",
-      specialist: "Khoa Thần kinh",
-    },
-    {
-      id: 4,
-      imageUrl: Doctor,
-      fullName: "Doctor",
-      specialist: "Khoa Thần kinh",
-    },
-    {
-      id: 5,
-      imageUrl: Doctor,
-      fullName: "Doctor",
-      specialist: "Khoa Thần kinh",
-    },
-  ];
+  const fetch = () => {
+    userService
+      .getDoctor({})
+      .then((doctor) => {
+        setDataDoctor(doctor.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetch();
+    }, [])
+  );
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
+      fetch();
     }, 1000);
   }, []);
 
@@ -189,6 +176,7 @@ function Home() {
             <Text>Tất cả</Text>
           </TouchableOpacity>
         </View>
+        
         <ItemDoctor data={dataDoctor} />
 
         <RecentPost data={dataPost} />

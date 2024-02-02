@@ -1,32 +1,30 @@
-import { Text, View } from "react-native";
+import { Text } from "react-native";
+import { useCallback, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+
 import SafeView from "~/components/SafeView";
 import ListItem from "./ListItem";
-import Doctor from "~/assets/img/doctor.jpg";
+import * as appointmentService from "~/services/appointmentService";
 
 function ListAppointment() {
-  const data = [
-    {
-      id: 1,
-      name: "Name",
-      imageUrl: Doctor,
-      status: 0,
-      date: "2023-02-02",
-    },
-    {
-      id: 2,
-      name: "Name",
-      imageUrl: Doctor,
-      status: 1,
-      date: "2023-02-04",
-    },
-    {
-      id: 3,
-      name: "Name",
-      imageUrl: Doctor,
-      status: 0,
-      date: "2023-06-02",
-    },
-  ];
+  const [data, setData] = useState([]);
+
+  const fetch = () => {
+    appointmentService
+      .getAppointment({})
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetch();
+    }, [])
+  );
 
   return (
     <SafeView>

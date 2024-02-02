@@ -1,3 +1,4 @@
+import { useCallback, useContext, useEffect, useState } from "react";
 import {
   Image,
   Linking,
@@ -8,20 +9,29 @@ import {
   View,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
+import { Zocial } from "@expo/vector-icons";
 
 import SafeView from "~/components/SafeView";
-import doctor from "~/assets/img/doctor.jpg";
-import { useNavigation } from "@react-navigation/native";
-import { Zocial } from "@expo/vector-icons";
-import { useState } from "react";
 import HeaderGoBack from "~/components/HeaderGoBack";
+import { AuthContext } from "~/shared/AuthProvider";
+import * as appointmentService from "~/services/appointmentService";
+import Toast from "react-native-toast-message";
 
 function Appointment() {
+  const route = useRoute();
   const navigation = useNavigation();
+  const { currentInfo } = useContext(AuthContext);
+  const { data } = route.params;
+
   const [chosenDate, setChosenDate] = useState(new Date());
-  const [chosenTime, setChosenTime] = useState(new Date());
+  const [chosenTime, setChosenTime] = useState("");
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [timeSelect, setTimeSelect] = useState([]);
 
   const handleDateChange = (event, newDate) => {
     if (Platform.OS === "android") {
@@ -32,19 +42,8 @@ function Appointment() {
     }
   };
 
-  const handleTimeChange = (event, newDate) => {
-    if (Platform.OS === "android") {
-      setShowTimePicker(false);
-    } else {
-      setShowDatePicker(false);
-    }
-    if (newDate !== undefined) {
-      setChosenTime(newDate);
-    }
-  };
-
   const handleCallPress = () => {
-    const phoneNumberWithTel = `tel:009999999`;
+    const phoneNumberWithTel = `tel:${data.phone}`;
 
     Linking.openURL(phoneNumberWithTel).catch((err) =>
       console.error("Không thể mở ứng dụng gọi điện:", err)
@@ -52,8 +51,52 @@ function Appointment() {
   };
 
   const handleSubmit = () => {
-    const time = chosenTime.toLocaleTimeString("vi-vn");
+    const date = chosenDate.toLocaleDateString("vi-vn");
+    const value = {
+      time: chosenTime,
+      date: date,
+      doctorId: data._id,
+      currentUserId: currentInfo._id,
+    };
+
+    appointmentService
+      .newAppointment({ data: value })
+      .then((res) => {
+        if (res) {
+          Toast.show({
+            type: "success",
+            text1: "Đặt lịch khám thành công",
+          });
+
+          fetch();
+        }
+      })
+      .catch((err) => console.log(err));
   };
+
+  const fetch = () => {
+    const arrTime = [];
+    for (let i = 8; i <= 17; i++) {
+      arrTime.push(i + ":00");
+    }
+    appointmentService
+      .getAppointment({ date: chosenDate.toLocaleDateString("vi-vn") })
+      .then((res) => {
+        const reservedTimes = res.data.map((item) => item.time);
+        const availableTimes = arrTime.filter(
+          (time) => !reservedTimes.includes(time)
+        );
+        setTimeSelect(availableTimes);
+        setChosenTime(availableTimes[0]);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    if (chosenDate) {
+      fetch();
+    }
+  }, [chosenDate]);
 
   return (
     <SafeView>
@@ -62,7 +105,7 @@ function Appointment() {
           marginHorizontal: 10,
         }}
       >
-        <HeaderGoBack title={"Hẹn lịch khám"}/>
+        <HeaderGoBack title={"Hẹn lịch khám"} />
         <ScrollView style={{ height: "100%" }}>
           <View
             style={{
@@ -74,7 +117,7 @@ function Appointment() {
           >
             <View style={{ flexDirection: "row" }}>
               <Image
-                source={doctor}
+                source={{ uri: data.imageUrl }}
                 style={{
                   width: 100,
                   height: 100,
@@ -83,8 +126,8 @@ function Appointment() {
                 }}
               />
               <View>
-                <Text style={{ fontWeight: 600 }}>FullName</Text>
-                <Text>Tai mũi họng</Text>
+                <Text style={{ fontWeight: 600 }}>{data.fullName}</Text>
+                <Text>{data.specialist}</Text>
               </View>
             </View>
             <TouchableOpacity onPress={handleCallPress} style={{ padding: 20 }}>
@@ -92,16 +135,17 @@ function Appointment() {
             </TouchableOpacity>
           </View>
           <View style={{ marginVertical: 10 }}>
+            <Text>Chọn ngày thăm khám</Text>
             <TouchableOpacity
               onPress={() => {
                 setShowDatePicker(!showDatePicker);
-                setShowTimePicker(false);
               }}
               style={{
                 borderWidth: 1,
                 borderRadius: 10,
                 paddingHorizontal: 20,
                 paddingVertical: 16,
+                marginVertical: 10,
               }}
             >
               <Text>
@@ -118,34 +162,36 @@ function Appointment() {
               />
             )}
 
-            <TouchableOpacity
-              onPress={() => {
-                setShowTimePicker(!showTimePicker);
-                setShowDatePicker(false);
-              }}
-              style={{
-                borderWidth: 1,
-                borderRadius: 10,
-                paddingHorizontal: 20,
-                paddingVertical: 16,
-                marginVertical: 10,
-              }}
-            >
-              <Text>
-                {chosenTime.toLocaleTimeString("vi-vn") || "Chọn giờ khám"}
-              </Text>
-            </TouchableOpacity>
-
-            {showTimePicker && (
-              <DateTimePicker
-                value={chosenTime}
-                mode="time"
-                display="spinner"
-                onChange={handleTimeChange}
-              />
-            )}
+            <Text>Chọn giờ thăm khám</Text>
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+              {timeSelect.map((time) => (
+                <TouchableOpacity
+                  key={time}
+                  onPress={() => {
+                    setChosenTime(time);
+                  }}
+                  style={{
+                    borderWidth: 1,
+                    borderRadius: 10,
+                    paddingVertical: 16,
+                    width: "45%",
+                    margin: 8,
+                    backgroundColor: chosenTime == time ? "#ccc" : "#fff",
+                  }}
+                >
+                  <Text style={{ textAlign: "center" }}>{time}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              marginBottom: 150,
+            }}
+          >
             <TouchableOpacity
               activeOpacity={1}
               style={{

@@ -1,4 +1,5 @@
 import { TextInput, View } from "react-native";
+import Toast from "react-native-toast-message";
 
 function InputCustom({
   label,
@@ -26,9 +27,9 @@ function InputCustom({
         justifyContent: "center",
         marginBottom: 15,
         padding: 4,
-          borderWidth: 1,
-          borderColor: "#e9e9e9",
-          borderRadius: 10,
+        borderWidth: 1,
+        borderColor: "#e9e9e9",
+        borderRadius: 10,
         ...isEmpty,
       }}
     >

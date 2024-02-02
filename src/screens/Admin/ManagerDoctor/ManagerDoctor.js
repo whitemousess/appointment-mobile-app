@@ -1,57 +1,45 @@
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { TextInput, TouchableOpacity, View } from "react-native";
+import { Feather } from "@expo/vector-icons";
+import { useCallback, useState, useEffect } from "react";
 
 import SafeView from "~/components/SafeView";
 import UserItem from "./UserItem";
-import { Feather } from "@expo/vector-icons";
-import { useCallback, useState } from "react";
+import * as userService from "~/services/userService";
+import { useFocusEffect } from "@react-navigation/native";
 
 function ManagerDoctor() {
   const [refreshing, setRefreshing] = useState(false);
+  const [data, setData] = useState([]);
+
+  const fetch = () => {
+    userService
+      .getDoctor()
+      .then((res) => setData(res.data))
+      .catch((err) => console.log(err));
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetch();
+    }, [])
+  );
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
+      fetch();
     }, 1000);
   }, []);
 
-  const data = [
-    {
-      id: 1,
-      fullName: "Doctor1",
-      specialist: "Khoa chấn thương",
-      imageUrl:
-        "https://res.cloudinary.com/dd6sxqlso/image/upload/v1699341107/dormitory/cgws4mqrwji923xyc4jm.jpg",
-    },
-    {
-      id: 2,
-      fullName: "Doctor2",
-      specialist: "Khoa chấn thương",
-      imageUrl:
-        "https://res.cloudinary.com/dd6sxqlso/image/upload/v1699341107/dormitory/cgws4mqrwji923xyc4jm.jpg",
-    },
-    {
-      id: 3,
-      fullName: "Doctor3",
-      specialist: "Khoa chấn thương",
-      imageUrl:
-        "https://res.cloudinary.com/dd6sxqlso/image/upload/v1699341107/dormitory/cgws4mqrwji923xyc4jm.jpg",
-    },
-    {
-      id: 4,
-      fullName: "Doctor4",
-      specialist: "Khoa chấn thương",
-      imageUrl:
-        "https://res.cloudinary.com/dd6sxqlso/image/upload/v1699341107/dormitory/cgws4mqrwji923xyc4jm.jpg",
-    },
-    {
-      id: 5,
-      fullName: "Doctor5",
-      specialist: "Khoa chấn thương",
-      imageUrl:
-        "https://res.cloudinary.com/dd6sxqlso/image/upload/v1699341107/dormitory/cgws4mqrwji923xyc4jm.jpg",
-    },
-  ];
+  const onDelete = (id) => {
+    userService
+      .deleteUser({ id })
+      .then((res) => {
+        if (res) fetch();
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <SafeView>
@@ -89,7 +77,12 @@ function ManagerDoctor() {
           </TouchableOpacity>
         </View>
 
-        <UserItem data={data} refreshing={refreshing} onRefresh={onRefresh} />
+        <UserItem
+          data={data}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          onDelete={onDelete}
+        />
       </View>
     </SafeView>
   );

@@ -9,18 +9,18 @@ import { ScrollView } from "react-native";
 
 function DetailDoctor() {
   const route = useRoute();
-  const doctorId = route?.params.doctorId;
+  const { data } = route.params;
 
   useFocusEffect(
     useCallback(() => {
-      console.log(doctorId);
+      console.log(data);
     })
   );
 
   return (
     <SafeView>
       <ScrollView style={{ height: "100%" }}>
-        <Header />
+        <Header data={data}/>
         <RecentPost />
       </ScrollView>
     </SafeView>

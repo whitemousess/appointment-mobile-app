@@ -95,7 +95,6 @@ export const AuthProvider = ({ children }) => {
         text1: "Mật khẩu không trùng khớp",
       });
     } else if (validateEmail(data.email)) {
-      console.log(data);
       // userService
       //   .register({ data })
       //   .then((res) => {

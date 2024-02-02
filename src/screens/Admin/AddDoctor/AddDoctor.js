@@ -1,24 +1,42 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
-  Text,
   View,
   StyleSheet,
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  TouchableOpacity,
+  Text,
 } from "react-native";
 import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
+import { Picker } from "@react-native-picker/picker";
+import Toast from "react-native-toast-message";
 
 import InputCustom from "~/components/InputCustom";
 import ButtonCustom from "~/components/ButtonCustom";
 import SafeView from "~/components/SafeView";
 import HeaderGoBack from "~/components/HeaderGoBack";
+import * as userService from "~/services/userService";
+
+const optionSpecialist = [
+  {
+    value: "Khoa thần kinh",
+  },
+  {
+    value: "Khoa tai mũi họng",
+  },
+  {
+    value: "Khoa tim mạch",
+  },
+];
 
 function AddDoctor() {
   const [data, setData] = useState({
     username: "",
     password: "",
     rePassword: "",
+    gender: 0,
+    specialist: optionSpecialist[0].value,
     fullName: "",
     email: "",
     phone: "",
@@ -31,16 +49,60 @@ function AddDoctor() {
     setInvalidFields({ ...invalidFields, [key]: false });
   };
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const newDoctor = () => {
+    if (data.password !== data.rePassword) {
+      Toast.show({
+        type: "error",
+        text1: "Mật khẩu không trùng khớp",
+      });
+    } else if (!validateEmail(data.email)) {
+      Toast.show({
+        type: "error",
+        text1: "Email không hợp lệ",
+      });
+    } else {
+      userService
+        .newDoctor({ data })
+        .then((res) => {
+          if (res.data) {
+            Toast.show({
+              type: "success",
+              text1: "Thêm thành công",
+            });
+          } else if (res.response.data.error.keyPattern.username) {
+            Toast.show({
+              type: "error",
+              text1: "không thể đăng ký",
+              text2: "Tài khoản đã tồn tại",
+            });
+            navigator("");
+          } else if (res.response.data.error.keyPattern.email) {
+            Toast.show({
+              type: "error",
+              text1: "không thể đăng ký",
+              text2: "Email đã tồn tại",
+            });
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
   const handleSubmit = () => {
     let newInvalidFields = {};
     Object.keys(data).forEach((key) => {
-      if (data[key].trim() === "") {
+      if (data[key] === "") {
         newInvalidFields[key] = true;
       }
     });
 
     if (Object.keys(newInvalidFields).length === 0) {
-      editProfile(data);
+      newDoctor();
     } else {
       setInvalidFields(newInvalidFields);
     }
@@ -49,10 +111,9 @@ function AddDoctor() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ScrollView style={styles.container}>
+        <HeaderGoBack title={`Thêm bác sĩ`} />
         <SafeView>
           <View style={styles.contentRegister}>
-            <HeaderGoBack title={`Thay đổi thông tin của ${data.fullName}`} />
-
             <InputCustom
               label="Tài khoản ..."
               value={data.username}
@@ -110,6 +171,50 @@ function AddDoctor() {
               isError={invalidFields["fullName"]}
             />
 
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                onPress={() => setData({ ...data, gender: 0 })}
+                style={{
+                  flexDirection: "row",
+                  paddingRight: 50,
+                  paddingBottom: 16,
+                }}
+              >
+                <View
+                  style={{
+                    borderWidth: 5,
+                    borderColor: data.gender === 0 ? "#40A2E3" : "#333",
+                    width: 20,
+                    height: 20,
+                    borderRadius: 50,
+                    marginRight: 5,
+                  }}
+                />
+                <Text>Nam</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => setData({ ...data, gender: 1 })}
+                style={{
+                  flexDirection: "row",
+                  paddingRight: 50,
+                  paddingBottom: 16,
+                }}
+              >
+                <View
+                  style={{
+                    borderWidth: 5,
+                    borderColor: data.gender === 1 ? "#40A2E3" : "#333",
+                    width: 20,
+                    height: 20,
+                    borderRadius: 50,
+                    marginRight: 5,
+                  }}
+                />
+                <Text>Nữ</Text>
+              </TouchableOpacity>
+            </View>
+
             <InputCustom
               label="Email ..."
               value={data.email}
@@ -154,7 +259,29 @@ function AddDoctor() {
               isError={invalidFields["address"]}
             />
 
-            <ButtonCustom label="Thay đổi" onPress={handleSubmit} />
+            <Picker
+              itemStyle={{
+                height: 150,
+                borderWidth: 1,
+                borderColor: "#ccc",
+                borderRadius: 10,
+                marginBottom: 10,
+              }}
+              selectedValue={data.specialist}
+              onValueChange={(itemValue) =>
+                setData({ ...data, specialist: itemValue })
+              }
+            >
+              {optionSpecialist.map((item, index) => (
+                <Picker.Item
+                  key={index}
+                  label={item.value}
+                  value={item.value}
+                />
+              ))}
+            </Picker>
+
+            <ButtonCustom label="Thếm" onPress={handleSubmit} />
           </View>
         </SafeView>
       </ScrollView>

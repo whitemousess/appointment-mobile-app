@@ -1,12 +1,18 @@
 import { ScrollView } from "react-native";
-import ListItem from "./ListItem";
+import Item from "./Item";
+import { useContext } from "react";
+import { AuthContext } from "~/shared/AuthProvider";
 
 function ItemDoctor({ data = [] }) {
+  const { currentInfo } = useContext(AuthContext);
+
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-      {data.map((item) => (
-        <ListItem key={item.id} data={item} />
-      ))}
+      {data.map((item) => {
+        if (item._id !== currentInfo._id) {
+          return <Item key={item._id} data={item} />;
+        }
+      })}
     </ScrollView>
   );
 }

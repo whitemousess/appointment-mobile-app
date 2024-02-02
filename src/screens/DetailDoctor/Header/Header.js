@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
-function Header() {
+function Header({ data }) {
   const navigation = useNavigation();
 
   return (
@@ -9,16 +9,16 @@ function Header() {
       <View style={{ flexDirection: "column", alignItems: "center" }}>
         <Image
           source={{
-            uri: "https://res.cloudinary.com/dd6sxqlso/image/upload/v1699962776/dormitory/rpw0ivixii7zkematdbj.jpg",
+            uri: data.imageUrl,
           }}
           style={{ width: 250, height: 250, borderRadius: 999 }}
         />
         <Text style={{ marginVertical: 16, fontSize: 18, fontWeight: 600 }}>
-          FullName
+          {data.fullName}
         </Text>
       </View>
-      <Text>Chuyên khoa</Text>
-      <Text style={{ marginVertical: 10 }}>Địa chỉ</Text>
+      <Text>Chuyên khoa : {data.specialist}</Text>
+      <Text style={{ marginVertical: 10 }}>Địa chỉ: {data.address}</Text>
       <TouchableOpacity
         activeOpacity={0.6}
         style={{
@@ -29,7 +29,13 @@ function Header() {
           marginHorizontal: 16,
         }}
       >
-        <TouchableOpacity onPress={() => navigation.navigate("Appointment")}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Appointment", {
+              data: data,
+            })
+          }
+        >
           <Text style={{ textAlign: "center" }}>Đặt lịch hẹn</Text>
         </TouchableOpacity>
       </TouchableOpacity>

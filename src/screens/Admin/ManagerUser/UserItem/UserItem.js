@@ -1,9 +1,9 @@
 import { FlatList, RefreshControl } from "react-native";
 import Item from "./Item";
 
-function UserItem({ data, refreshing, onRefresh }) {
+function UserItem({ data, refreshing, onRefresh, onDelete }) {
   const renderItem = (item) => {
-    return <Item data={item} />;
+    return <Item data={item} onDelete={onDelete} />;
   };
 
   return (

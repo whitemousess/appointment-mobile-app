@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 
-function Item({ data }) {
+function Item({ data, onDelete }) {
   const navigation = useNavigation();
 
   const renderLeftActions = () => {
@@ -36,6 +36,7 @@ function Item({ data }) {
             backgroundColor: "#f87171",
           }}
           activeOpacity={0.8}
+          onPress={() => onDelete(data._id)}
         >
           <MaterialIcons name="delete" size={24} color="white" />
         </TouchableOpacity>

@@ -1,21 +1,31 @@
-import { ScrollView } from "react-native";
+import { FlatList, ScrollView } from "react-native";
 import ListItem from "./ListItem";
 
-function Diseases() {
+function Diseases({ onFilter }) {
+  const specialist = [
+    {
+      value: "Khoa thần kinh",
+    },
+    {
+      value: "Khoa tai mũi họng",
+    },
+    {
+      value: "Khoa tim mạch",
+    },
+  ];
+
+  const renderItem = (item) => {
+    return <ListItem data={item.value} onFilter={onFilter} />;
+  };
+
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-      <ListItem />
-      <ListItem />
-      <ListItem />
-      <ListItem />
-      <ListItem />
-      <ListItem />
-      <ListItem />
-      <ListItem />
-      <ListItem />
-      <ListItem />
-      <ListItem />
-    </ScrollView>
+    <FlatList
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      data={specialist}
+      renderItem={({ item }) => renderItem(item)}
+      keyExtractor={(item) => item.value}
+    />
   );
 }
 

@@ -19,7 +19,7 @@ function DetailPost() {
   const data = route?.params?.data;
   const [comment, setComment] = useState("");
   const [submit, setSubmit] = useState(false);
-  console.log(data);
+  
   const handleChange = (text) => {
     if (text.trimLeft() === text) {
       setComment(text);

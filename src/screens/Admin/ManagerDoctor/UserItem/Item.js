@@ -1,9 +1,9 @@
-import { Feather, MaterialIcons } from "@expo/vector-icons";
+import { Feather, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 
-function Item({ data }) {
+function Item({ data, onDelete }) {
   const navigation = useNavigation();
 
   const renderLeftActions = () => {
@@ -36,6 +36,9 @@ function Item({ data }) {
             backgroundColor: "#f87171",
           }}
           activeOpacity={0.8}
+          onPress={() => {
+            onDelete(data._id);
+          }}
         >
           <MaterialIcons name="delete" size={24} color="white" />
         </TouchableOpacity>
@@ -54,10 +57,19 @@ function Item({ data }) {
           overflow: "hidden",
         }}
       >
-        <Image
-          source={{ uri: data.imageUrl }}
-          style={{ width: 80, height: 80, marginRight: 10 }}
-        />
+        {data.imageUrl ? (
+          <Image
+            source={{ uri: data.imageUrl }}
+            style={{ width: 80, height: 80, marginRight: 10 }}
+          />
+        ) : (
+          <FontAwesome6
+            name="user-doctor"
+            size={80}
+            color="black"
+            style={{ padding: 5, marginRight: 10, borderRightWidth: 1 }}
+          />
+        )}
         <View>
           <Text>{data.fullName}</Text>
           <Text>{data.specialist}</Text>
