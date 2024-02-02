@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import {
   RefreshControl,
   ScrollView,
@@ -13,8 +13,11 @@ import RecentPost from "~/components/RecentPost";
 import Doctor from "~/assets/img/doctor.jpg";
 import HeaderScreen from "~/components/HeaderScreen";
 import * as userService from "~/services/userService";
+import ButtonPost from "~/components/PostStatus/ButtonPost";
+import { AuthContext } from "~/shared/AuthProvider";
 
 function Home() {
+  const { currentInfo } = useContext(AuthContext);
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
   const [dataDoctor, setDataDoctor] = useState([]);
@@ -122,7 +125,7 @@ function Home() {
     userService
       .getDoctor({})
       .then((doctor) => {
-        setDataDoctor(doctor.data.data);
+        setDataDoctor(doctor.data);
       })
       .catch((error) => {
         console.log(error);
@@ -176,8 +179,28 @@ function Home() {
             <Text>Tất cả</Text>
           </TouchableOpacity>
         </View>
-        
+
         <ItemDoctor data={dataDoctor} />
+
+        <View
+          style={{
+            marginHorizontal: 10,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "bold",
+              marginTop: 10,
+              borderTopWidth: 1,
+              borderColor: "#ccc",
+              paddingTop: 10,
+            }}
+          >
+            Bài viết
+          </Text>
+          {currentInfo.role === 1 && <ButtonPost />}
+        </View>
 
         <RecentPost data={dataPost} />
       </ScrollView>

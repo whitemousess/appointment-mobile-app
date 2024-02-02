@@ -20,7 +20,6 @@ function ListItem({ onScroll, handleLoadMore, data,onRefresh,refreshing }) {
       renderItem={({ item }) => renderItem(item)}
       keyExtractor={(item) => item._id}
       onEndReached={handleLoadMore}
-      showsVerticalScrollIndicator={false}
       onScroll={onScroll}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

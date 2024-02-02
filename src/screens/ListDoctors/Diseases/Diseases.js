@@ -1,7 +1,7 @@
-import { FlatList, ScrollView } from "react-native";
+import { FlatList } from "react-native";
 import ListItem from "./ListItem";
 
-function Diseases({ onFilter }) {
+function Diseases({ onFilter, selected }) {
   const specialist = [
     {
       value: "Khoa thần kinh",
@@ -15,7 +15,9 @@ function Diseases({ onFilter }) {
   ];
 
   const renderItem = (item) => {
-    return <ListItem data={item.value} onFilter={onFilter} />;
+    return (
+      <ListItem data={item.value} onFilter={onFilter} selected={selected} />
+    );
   };
 
   return (

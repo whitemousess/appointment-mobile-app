@@ -1,5 +1,5 @@
-import { AntDesign, EvilIcons } from "@expo/vector-icons";
-import React, { useContext } from "react";
+import { AntDesign, EvilIcons, Ionicons } from "@expo/vector-icons";
+import React, { useContext, useState } from "react";
 import {
   Modal,
   View,
@@ -12,9 +12,38 @@ import {
 } from "react-native";
 
 import { AuthContext } from "~/shared/AuthProvider";
+import UploadImage from "../UploadImage";
 
 const ModalPost = ({ visible, onClose }) => {
   const { currentInfo } = useContext(AuthContext);
+  const [data, setData] = useState({
+    status: "",
+    imageUrl: "",
+  });
+  const [submit, setSubmit] = useState(false);
+
+  const handleImageUpload = (imageUrl) => {
+    setData({ ...data, imageUrl });
+  };
+
+  const handleChange = (text) => {
+    if (text.trimLeft() === text) {
+      setData({ ...data, status: text });
+      if (text !== "") {
+        setSubmit(true);
+      } else {
+        setSubmit(false);
+      }
+    }
+  };
+
+  const handleSubmit = () => {
+    if (submit) {
+      console.log(comment);
+      setSubmit(false);
+      setData("");
+    }
+  };
 
   return (
     <Modal
@@ -29,7 +58,7 @@ const ModalPost = ({ visible, onClose }) => {
         </TouchableOpacity>
         <Text style={{ color: "white", fontSize: 18 }}>Tạo bài viết</Text>
         <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
-          <Text style={{ fontSize: 18, color: "#6e7275" }}>Tiếp</Text>
+          <Ionicons name="send" size={24} color={submit ? "#3468C0" : "#ccc"} />
         </TouchableOpacity>
       </View>
 
@@ -49,7 +78,7 @@ const ModalPost = ({ visible, onClose }) => {
               color: "white",
               fontSize: 16,
               fontWeight: "700",
-              marginLeft: 10
+              marginLeft: 10,
             }}
           >
             {currentInfo.fullName}
@@ -61,6 +90,8 @@ const ModalPost = ({ visible, onClose }) => {
           placeholderTextColor="#818588"
           placeholder="Bạn đang nghĩ gì?"
           multiline={true}
+          value={data.status}
+          onChangeText={(text) => handleChange(text)}
         />
       </ScrollView>
     </Modal>

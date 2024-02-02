@@ -1,29 +1,42 @@
 import { useContext, useState } from "react";
 import {
-  Text,
   View,
   StyleSheet,
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  TouchableOpacity,
+  Text,
 } from "react-native";
+import CryptoJS from "crypto-js";
 import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
+import { useRoute } from "@react-navigation/native";
 
 import InputCustom from "~/components/InputCustom";
 import ButtonCustom from "~/components/ButtonCustom";
+import { AuthContext } from "~/shared/AuthProvider";
 import SafeView from "~/components/SafeView";
 import HeaderGoBack from "~/components/HeaderGoBack";
-import { useRoute } from "@react-navigation/native";
+import UploadImage from "~/components/UploadImage";
 
 function EditUser() {
   const route = useRoute();
+  const { editProfile } = useContext(AuthContext);
   const dataInfo = route?.params?.data;
+
+  const decrypted = CryptoJS.AES.decrypt(
+    dataInfo.password,
+    process.env.REACT_APP_ACCESS_TOKEN
+  ).toString(CryptoJS.enc.Utf8);
+
   const [data, setData] = useState({
-    username: dataInfo.username,
-    password: "",
-    rePassword: "",
+    _id: dataInfo._id,
+    password: decrypted,
+    rePassword: decrypted,
     fullName: dataInfo.fullName,
+    imageUrl: dataInfo.imageUrl,
     email: dataInfo.email,
+    gender: dataInfo.gender,
     phone: dataInfo.phone,
     address: dataInfo.address,
   });
@@ -34,10 +47,15 @@ function EditUser() {
     setInvalidFields({ ...invalidFields, [key]: false });
   };
 
+  const handleImageUpload = (imageUrl) => {
+    setData({ ...data, imageUrl });
+  };
+
+
   const handleSubmit = () => {
     let newInvalidFields = {};
     Object.keys(data).forEach((key) => {
-      if (data[key].trim() === "") {
+      if (data[key] === "") {
         newInvalidFields[key] = true;
       }
     });
@@ -56,19 +74,7 @@ function EditUser() {
           <View style={styles.contentRegister}>
             <HeaderGoBack title={`Thay đổi thông tin của ${data.fullName}`} />
 
-            <InputCustom
-              label="Tài khoản ..."
-              value={data.username}
-              onChange={(text) => handleChange("username", text)}
-              icon={
-                <MaterialIcons
-                  name="person"
-                  size={28}
-                  color={`${invalidFields["username"] ? "red" : "#666"}`}
-                />
-              }
-              isError={invalidFields["username"]}
-            />
+            <UploadImage onImageUpload={handleImageUpload} />
 
             <InputCustom
               label="Mật khẩu ..."
@@ -112,6 +118,50 @@ function EditUser() {
               }
               isError={invalidFields["fullName"]}
             />
+
+<View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                onPress={() => setData({ ...data, gender: 0 })}
+                style={{
+                  flexDirection: "row",
+                  paddingRight: 50,
+                  paddingBottom: 16,
+                }}
+              >
+                <View
+                  style={{
+                    borderWidth: 5,
+                    borderColor: data.gender === 0 ? "#40A2E3" : "#333",
+                    width: 20,
+                    height: 20,
+                    borderRadius: 50,
+                    marginRight: 5,
+                  }}
+                />
+                <Text>Nam</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => setData({ ...data, gender: 1 })}
+                style={{
+                  flexDirection: "row",
+                  paddingRight: 50,
+                  paddingBottom: 16,
+                }}
+              >
+                <View
+                  style={{
+                    borderWidth: 5,
+                    borderColor: data.gender === 1 ? "#40A2E3" : "#333",
+                    width: 20,
+                    height: 20,
+                    borderRadius: 50,
+                    marginRight: 5,
+                  }}
+                />
+                <Text>Nữ</Text>
+              </TouchableOpacity>
+            </View>
 
             <InputCustom
               label="Email ..."

@@ -18,12 +18,14 @@ function Item({ data }) {
       }}
     >
       <View style={{ flexDirection: "row" }}>
-        <Image source={data.imageUrl} style={{ width: 100, height: 100 }} />
+        <Image
+          source={{ uri: data.currentUserId.imageUrl }}
+          style={{ width: 100, height: 100 }}
+        />
         <View>
           <Text style={{ paddingHorizontal: 10, paddingTop: 10 }}>
             {data.currentUserId.fullName}
           </Text>
-          <Text>Thời gian : </Text>
           <Text style={{ paddingHorizontal: 10, paddingTop: 4 }}>
             {data.time}
           </Text>
@@ -41,7 +43,7 @@ function Item({ data }) {
           paddingVertical: 10,
         }}
       >
-        {data.status === 0 ? "Đã khám" : "Chưa khám"}
+        {data.status === 0 ? "Chưa khám" : "Đã khám"}
       </Text>
     </View>
   );

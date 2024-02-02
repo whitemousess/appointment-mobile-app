@@ -20,7 +20,7 @@ function Item({ data, onDelete }) {
           }}
           activeOpacity={0.8}
           onPress={() =>
-            navigation.navigate("EditDoctor", {
+            navigation.navigate("EditUser", {
               data: data,
             })
           }

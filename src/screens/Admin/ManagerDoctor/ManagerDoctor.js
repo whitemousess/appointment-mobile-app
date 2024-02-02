@@ -10,18 +10,23 @@ import { useFocusEffect } from "@react-navigation/native";
 function ManagerDoctor() {
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState([]);
+  const [search, setSearch] = useState("");
 
   const fetch = () => {
     userService
-      .getDoctor()
+      .getDoctor({ fullName: search })
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
+  };
+
+  const handleSearch = (text) => {
+    setSearch(text);
   };
 
   useFocusEffect(
     useCallback(() => {
       fetch();
-    }, [])
+    }, [search])
   );
 
   const onRefresh = useCallback(() => {
@@ -50,9 +55,6 @@ function ManagerDoctor() {
       >
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
             borderWidth: 1,
             borderColor: "#ccc",
             borderRadius: 10,
@@ -63,18 +65,9 @@ function ManagerDoctor() {
           <TextInput
             placeholder="Tìm kiếm theo tên ..."
             style={{ paddingVertical: 10, paddingHorizontal: 10 }}
+            value={search}
+            onChangeText={handleSearch}
           />
-          <TouchableOpacity
-            activeOpacity={1}
-            style={{
-              backgroundColor: "#000",
-              paddingHorizontal: 16,
-              paddingVertical: 8,
-              borderRadius: 10,
-            }}
-          >
-            <Feather name="search" size={24} color="white" />
-          </TouchableOpacity>
         </View>
 
         <UserItem

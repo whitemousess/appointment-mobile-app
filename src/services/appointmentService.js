@@ -6,7 +6,13 @@ const getToken = async () => {
   return res;
 };
 
-export const getAppointment = async ({ page, perPage, date, time }) => {
+export const getAppointment = async ({
+  page,
+  perPage,
+  date,
+  time,
+  doctorId,
+}) => {
   try {
     const token = await getToken();
     const res = await httpRequest.get(`appointment/get-appointment`, {
@@ -18,6 +24,7 @@ export const getAppointment = async ({ page, perPage, date, time }) => {
         per_page: perPage,
         date,
         time,
+        doctorId,
       },
     });
     return res.data;
@@ -30,6 +37,34 @@ export const getHistoryAppointment = async () => {
   try {
     const token = await getToken();
     const res = await httpRequest.get(`appointment/get-history-appointment`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getMyAppointment = async () => {
+  try {
+    const token = await getToken();
+    const res = await httpRequest.get(`appointment/my-appointment`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteAppointment = async ({ id }) => {
+  try {
+    const token = await getToken();
+    const res = await httpRequest.delete(`appointment/delete-appointment/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

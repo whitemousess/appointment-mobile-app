@@ -4,27 +4,28 @@ import {
   FontAwesome6,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
 import {
   RefreshControl,
   ScrollView,
   Text,
   TouchableOpacity,
-  View,
 } from "react-native";
 
 import * as userService from "~/services/userService";
+import * as appointmentService from "~/services/appointmentService";
 
 function HomeAdmin() {
   const navigation = useNavigation();
   const [totalDoctor, setTotalDoctor] = useState(0);
   const [totalUser, setTotalUser] = useState(0);
+  const [totalAppointment, setTotalAppointment] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = () => {
     userService
-      .getDoctor()
+      .getDoctor({})
       .then((res) => {
         setTotalDoctor(res.data.length);
       })
@@ -33,9 +34,18 @@ function HomeAdmin() {
       });
 
     userService
-      .getUser()
+      .getUser({})
       .then((res) => {
         setTotalUser(res.data.length);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    appointmentService
+      .getAppointment({})
+      .then((res) => {
+        setTotalAppointment(res.data.length);
       })
       .catch((err) => {
         console.log(err);
@@ -50,9 +60,7 @@ function HomeAdmin() {
     }, 1000);
   }, []);
 
-  useEffect(() => {
-    fetch();
-  }, []);
+  useFocusEffect(useCallback(() => fetch(), []));
 
   return (
     <ScrollView
@@ -83,7 +91,7 @@ function HomeAdmin() {
 
       <TouchableOpacity
         activeOpacity={1}
-        onPress={() => navigation.navigate("ManagerUser")}
+        onPress={() => navigation.navigate("UserStack")}
         style={{
           flexDirection: "column",
           alignItems: "center",
@@ -114,7 +122,9 @@ function HomeAdmin() {
         }}
       >
         <AntDesign name="calendar" size={50} color="black" />
-        <Text style={{ marginTop: 10, fontSize: 16 }}>32 lịch hẹn</Text>
+        <Text style={{ marginTop: 10, fontSize: 16 }}>
+          {totalAppointment} lịch hẹn
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity

@@ -51,35 +51,6 @@ function ManagerPost() {
           marginHorizontal: 10,
         }}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            borderWidth: 1,
-            borderColor: "#ccc",
-            borderRadius: 10,
-            marginTop: 10,
-            paddingHorizontal: 4,
-          }}
-        >
-          <TextInput
-            placeholder="Tìm kiếm theo tên ..."
-            style={{ paddingVertical: 10, paddingHorizontal: 10 }}
-          />
-          <TouchableOpacity
-            activeOpacity={1}
-            style={{
-              backgroundColor: "#000",
-              paddingHorizontal: 16,
-              paddingVertical: 8,
-              borderRadius: 10,
-            }}
-          >
-            <Feather name="search" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
-
         <ListItem data={data} refreshing={refreshing} onRefresh={onRefresh} />
       </View>
     </SafeView>

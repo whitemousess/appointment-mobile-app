@@ -1,62 +1,56 @@
+import { Feather } from "@expo/vector-icons";
+import { useCallback, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { TextInput, TouchableOpacity, View } from "react-native";
 
 import SafeView from "~/components/SafeView";
 import ListAppointment from "./ListAppointment";
-import { Feather } from "@expo/vector-icons";
-import { useCallback, useState } from "react";
+import * as appointmentService from "~/services/appointmentService";
+import Toast from "react-native-toast-message";
 
 function ManagerAppointment() {
   const [refreshing, setRefreshing] = useState(false);
+  const [data, setData] = useState([]);
+
+  const fetch = () => {
+    appointmentService
+      .getAppointment({})
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetch();
+    }, [])
+  );
+
+  const onDelete = (id) => {
+    appointmentService
+      .deleteAppointment({ id })
+      .then((res) => {
+        Toast.show({
+          type: "success",
+          text1: "Xóa thành công",
+        });
+        fetch();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
+      fetch();
     }, 1000);
   }, []);
-
-  const data = [
-    {
-      id: 1,
-      fullName: "User1",
-      date: "2023-12-12",
-      imageUrl:
-        "https://res.cloudinary.com/dd6sxqlso/image/upload/v1699870692/dormitory/iljuflq5ckshzglbmzow.jpg",
-      status: 0,
-    },
-    {
-      id: 2,
-      fullName: "User2",
-      date: "2023-12-12",
-      imageUrl:
-        "https://res.cloudinary.com/dd6sxqlso/image/upload/v1699870692/dormitory/iljuflq5ckshzglbmzow.jpg",
-      status: 0,
-    },
-    {
-      id: 3,
-      fullName: "User3",
-      date: "2023-12-12",
-      imageUrl:
-        "https://res.cloudinary.com/dd6sxqlso/image/upload/v1699870692/dormitory/iljuflq5ckshzglbmzow.jpg",
-      status: 1,
-    },
-    {
-      id: 4,
-      fullName: "User4",
-      date: "2023-12-12",
-      imageUrl:
-        "https://res.cloudinary.com/dd6sxqlso/image/upload/v1699870692/dormitory/iljuflq5ckshzglbmzow.jpg",
-      status: 1,
-    },
-    {
-      id: 5,
-      fullName: "User5",
-      date: "2023-12-12",
-      imageUrl:
-        "https://res.cloudinary.com/dd6sxqlso/image/upload/v1699870692/dormitory/iljuflq5ckshzglbmzow.jpg",
-      status: 0,
-    },
-  ];
 
   return (
     <SafeView>
@@ -65,36 +59,12 @@ function ManagerAppointment() {
           marginHorizontal: 10,
         }}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            borderWidth: 1,
-            borderColor: "#ccc",
-            borderRadius: 10,
-            marginTop: 10,
-            paddingHorizontal: 4,
-          }}
-        >
-          <TextInput
-            placeholder="Tìm kiếm theo tên ..."
-            style={{ paddingVertical: 10, paddingHorizontal: 10 }}
-          />
-          <TouchableOpacity
-            activeOpacity={1}
-            style={{
-              backgroundColor: "#000",
-              paddingHorizontal: 16,
-              paddingVertical: 8,
-              borderRadius: 10,
-            }}
-          >
-            <Feather name="search" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
-
-        <ListAppointment data={data} refreshing={refreshing} onRefresh={onRefresh}/>
+        <ListAppointment
+          data={data}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          onDelete={onDelete}
+        />
       </View>
     </SafeView>
   );

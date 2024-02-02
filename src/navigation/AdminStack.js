@@ -69,8 +69,8 @@ function AdminStack() {
         }}
       />
       <Drawer.Screen
-        name="ManagerUser"
-        component={ManagerUser}
+        name="UserStack"
+        component={UserStack}
         options={{
           title: "Người dùng",
           headerShown: false,

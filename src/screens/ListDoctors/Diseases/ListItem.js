@@ -1,7 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { Text, TouchableOpacity, View } from "react-native";
 
-function ListItem({ data, onFilter }) {
+function ListItem({ data, onFilter, selected }) {
   return (
     <TouchableOpacity
       activeOpacity={1}
@@ -11,10 +11,27 @@ function ListItem({ data, onFilter }) {
         flexDirection: "column",
         alignItems: "center",
       }}
-      onPress={() => onFilter(data)}
+      onPress={() => {
+        if (selected !== data) {
+          onFilter(data);
+        } else {
+          onFilter("");
+        }
+      }}
     >
-      <FontAwesome name="heartbeat" size={40} color="black" />
-      <Text style={{ fontSize: 16, textAlign: "center", fontWeight: "bold" }}>
+      <FontAwesome
+        name="heartbeat"
+        size={40}
+        color={selected === data ? "#3468C0" : "black"}
+      />
+      <Text
+        style={{
+          fontSize: 16,
+          textAlign: "center",
+          fontWeight: "bold",
+          color: selected === data ? "#3468C0" : "black",
+        }}
+      >
         {data}
       </Text>
     </TouchableOpacity>

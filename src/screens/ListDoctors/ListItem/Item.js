@@ -20,7 +20,7 @@ function Item({ data }) {
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("DetailDoctor", {
-            doctorId: data,
+            data: data,
           })
         }
         style={{ width: "40%" }}

@@ -84,7 +84,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const editProfile = (data) => {
+  const editProfile = async (data) => {
+    console.log(data)
     const validateEmail = (email) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
@@ -95,30 +96,35 @@ export const AuthProvider = ({ children }) => {
         text1: "Mật khẩu không trùng khớp",
       });
     } else if (validateEmail(data.email)) {
-      // userService
-      //   .register({ data })
-      //   .then((res) => {
-      //     if (res.data) {
-      //       Toast.show({
-      //         type: "success",
-      //         text1: "Thay đổi thành công",
-      //       });
-      //     } else if (res.response.data.error.keyPattern.username) {
-      //       Toast.show({
-      //         type: "error",
-      //         text1: "không thể Thay đổi",
-      //         text2: "Tài khoản đã tồn tại",
-      //       });
-      //       navigator("");
-      //     } else if (res.response.data.error.keyPattern.email) {
-      //       Toast.show({
-      //         type: "error",
-      //         text1: "không thể Thay đổi",
-      //         text2: "Email đã tồn tại",
-      //       });
-      //     }
-      //   })
-      //   .catch((err) => console.log(err));
+      const formData = new FormData();
+      formData.append("password", data.password);
+      formData.append("fullName", data.fullName);
+      formData.append("email", data.email);
+      formData.append("address", data.address);
+      formData.append("phone", data.phone);
+      formData.append("imageUrl", {
+        uri: data.imageUrl,
+        type: "image/png",
+        name: "image.png",
+      });
+
+      await userService
+        .editUser({ id: data._id, data: data })
+        .then((res) => {
+          if (res.data) {
+            Toast.show({
+              type: "success",
+              text1: "Thay đổi thành công",
+            });
+          } else if (res.response.data.error.keyPattern.email) {
+            Toast.show({
+              type: "error",
+              text1: "không thể Thay đổi",
+              text2: "Email đã tồn tại",
+            });
+          }
+        })
+        .catch((err) => console.log(err));
     } else {
       Toast.show({
         type: "error",

@@ -6,6 +6,8 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  Image,
+  TouchableOpacity,
 } from "react-native";
 import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
 
@@ -13,15 +15,19 @@ import InputCustom from "~/components/InputCustom";
 import ButtonCustom from "~/components/ButtonCustom";
 import { AuthContext } from "~/shared/AuthProvider";
 import SafeView from "~/components/SafeView";
+import HeaderGoBack from "~/components/HeaderGoBack";
+import UploadImage from "~/components/UploadImage";
 
 function EditProfile() {
   const { editProfile, currentInfo } = useContext(AuthContext);
   const [data, setData] = useState({
-    username: currentInfo.username,
-    password: currentInfo.password,
+    _id: currentInfo._id,
+    password: "",
     rePassword: "",
+    imageUrl: currentInfo.imageUrl,
     fullName: currentInfo.fullName,
     email: currentInfo.email,
+    gender: currentInfo.gender,
     phone: currentInfo.phone,
     address: currentInfo.address,
   });
@@ -47,117 +53,151 @@ function EditProfile() {
     }
   };
 
+  const handleImageUpload = (imageUrl) => {
+    setData({ ...data, imageUrl });
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ScrollView style={styles.container}>
-        <SafeView>
-          <View style={styles.contentRegister}>
-            <Text style={styles.Header}>Thay đổi thông tin</Text>
+        <View style={styles.contentRegister}>
+          <HeaderGoBack title={"Thay đổi thông tin"} />
 
-            <InputCustom
-              label="Tài khoản ..."
-              value={data.username}
-              onChange={(text) => handleChange("username", text)}
-              icon={
-                <MaterialIcons
-                  name="person"
-                  size={28}
-                  color={`${invalidFields["username"] ? "red" : "#666"}`}
-                />
-              }
-              isError={invalidFields["username"]}
-            />
+          <UploadImage onImageUpload={handleImageUpload} />
 
-            <InputCustom
-              label="Mật khẩu ..."
-              password={true}
-              value={data.password}
-              onChange={(text) => handleChange("password", text)}
-              icon={
-                <Ionicons
-                  name="lock-closed"
-                  size={20}
-                  color={`${invalidFields["password"] ? "red" : "#666"}`}
-                />
-              }
-              isError={invalidFields["password"]}
-            />
-            <InputCustom
-              label="Nhập lại mật khẩu ..."
-              password={true}
-              value={data.rePassword}
-              onChange={(text) => handleChange("rePassword", text)}
-              icon={
-                <Ionicons
-                  name="lock-closed"
-                  size={20}
-                  color={`${invalidFields["rePassword"] ? "red" : "#666"}`}
-                />
-              }
-              isError={invalidFields["rePassword"]}
-            />
+          <InputCustom
+            label="Mật khẩu ..."
+            password={true}
+            value={data.password}
+            onChange={(text) => handleChange("password", text)}
+            icon={
+              <Ionicons
+                name="lock-closed"
+                size={20}
+                color={`${invalidFields["password"] ? "red" : "#666"}`}
+              />
+            }
+            isError={invalidFields["password"]}
+          />
+          <InputCustom
+            label="Nhập lại mật khẩu ..."
+            password={true}
+            value={data.rePassword}
+            onChange={(text) => handleChange("rePassword", text)}
+            icon={
+              <Ionicons
+                name="lock-closed"
+                size={20}
+                color={`${invalidFields["rePassword"] ? "red" : "#666"}`}
+              />
+            }
+            isError={invalidFields["rePassword"]}
+          />
 
-            <InputCustom
-              label="Tên người dùng ..."
-              value={data.fullName}
-              onChange={(text) => handleChange("fullName", text)}
-              icon={
-                <MaterialIcons
-                  name="person"
-                  size={28}
-                  color={`${invalidFields["fullName"] ? "red" : "#666"}`}
-                />
-              }
-              isError={invalidFields["fullName"]}
-            />
+          <InputCustom
+            label="Tên người dùng ..."
+            value={data.fullName}
+            onChange={(text) => handleChange("fullName", text)}
+            icon={
+              <MaterialIcons
+                name="person"
+                size={28}
+                color={`${invalidFields["fullName"] ? "red" : "#666"}`}
+              />
+            }
+            isError={invalidFields["fullName"]}
+          />
 
-            <InputCustom
-              label="Email ..."
-              value={data.email}
-              onChange={(text) => handleChange("email", text)}
-              keyboardType="email-address"
-              icon={
-                <MaterialIcons
-                  name="alternate-email"
-                  size={28}
-                  color={`${invalidFields["email"] ? "red" : "#666"}`}
-                />
-              }
-              isError={invalidFields["email"]}
-            />
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity
+              onPress={() => setData({ ...data, gender: 0 })}
+              style={{
+                flexDirection: "row",
+                paddingRight: 50,
+                paddingBottom: 16,
+              }}
+            >
+              <View
+                style={{
+                  borderWidth: 5,
+                  borderColor: data.gender === 0 ? "#40A2E3" : "#333",
+                  width: 20,
+                  height: 20,
+                  borderRadius: 50,
+                  marginRight: 5,
+                }}
+              />
+              <Text>Nam</Text>
+            </TouchableOpacity>
 
-            <InputCustom
-              label="Số điện thoại ..."
-              value={data.phone}
-              onChange={(text) => handleChange("phone", text)}
-              keyboardType="numeric"
-              icon={
-                <AntDesign
-                  name="phone"
-                  size={28}
-                  color={`${invalidFields["phone"] ? "red" : "#666"}`}
-                />
-              }
-              isError={invalidFields["email"]}
-            />
-
-            <InputCustom
-              label="Địa chỉ ..."
-              value={data.address}
-              onChange={(text) => handleChange("address", text)}
-              icon={
-                <MaterialIcons
-                  name="home"
-                  size={28}
-                  color={`${invalidFields["address"] ? "red" : "#666"}`}
-                />
-              }
-              isError={invalidFields["address"]}
-            />
-
-            <ButtonCustom label="Thay đổi" onPress={handleSubmit} />
+            <TouchableOpacity
+              onPress={() => setData({ ...data, gender: 1 })}
+              style={{
+                flexDirection: "row",
+                paddingRight: 50,
+                paddingBottom: 16,
+              }}
+            >
+              <View
+                style={{
+                  borderWidth: 5,
+                  borderColor: data.gender === 1 ? "#40A2E3" : "#333",
+                  width: 20,
+                  height: 20,
+                  borderRadius: 50,
+                  marginRight: 5,
+                }}
+              />
+              <Text>Nữ</Text>
+            </TouchableOpacity>
           </View>
-        </SafeView>
+
+          <InputCustom
+            label="Email ..."
+            value={data.email}
+            onChange={(text) => handleChange("email", text)}
+            keyboardType="email-address"
+            icon={
+              <MaterialIcons
+                name="alternate-email"
+                size={28}
+                color={`${invalidFields["email"] ? "red" : "#666"}`}
+              />
+            }
+            isError={invalidFields["email"]}
+          />
+
+          <InputCustom
+            label="Số điện thoại ..."
+            value={data.phone}
+            onChange={(text) => handleChange("phone", text)}
+            keyboardType="numeric"
+            icon={
+              <AntDesign
+                name="phone"
+                size={28}
+                color={`${invalidFields["phone"] ? "red" : "#666"}`}
+              />
+            }
+            isError={invalidFields["email"]}
+          />
+
+          <InputCustom
+            label="Địa chỉ ..."
+            value={data.address}
+            onChange={(text) => handleChange("address", text)}
+            icon={
+              <MaterialIcons
+                name="home"
+                size={28}
+                color={`${invalidFields["address"] ? "red" : "#666"}`}
+              />
+            }
+            isError={invalidFields["address"]}
+          />
+
+          <ButtonCustom label="Thay đổi" onPress={handleSubmit} />
+        </View>
       </ScrollView>
     </TouchableWithoutFeedback>
   );
@@ -166,7 +206,7 @@ function EditProfile() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 24,
+    marginVertical: 24,
   },
   imageRegister: {
     display: "flex",

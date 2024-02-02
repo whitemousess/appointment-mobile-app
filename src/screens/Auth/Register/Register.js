@@ -24,6 +24,7 @@ function Register({ navigation }) {
     fullName: "",
     email: "",
     phone: "",
+    gender: 0,
     address: "",
   });
   const [invalidFields, setInvalidFields] = useState({});
@@ -36,7 +37,7 @@ function Register({ navigation }) {
   const handleSubmit = () => {
     let newInvalidFields = {};
     Object.keys(data).forEach((key) => {
-      if (data[key].trim() === "") {
+      if (data[key] === "") {
         newInvalidFields[key] = true;
       }
     });
@@ -97,6 +98,50 @@ function Register({ navigation }) {
               }
               isError={invalidFields["fullName"]}
             />
+
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                onPress={() => setData({ ...data, gender: 0 })}
+                style={{
+                  flexDirection: "row",
+                  paddingRight: 50,
+                  paddingBottom: 16,
+                }}
+              >
+                <View
+                  style={{
+                    borderWidth: 5,
+                    borderColor: data.gender === 0 ? "#40A2E3" : "#333",
+                    width: 20,
+                    height: 20,
+                    borderRadius: 50,
+                    marginRight: 5,
+                  }}
+                />
+                <Text>Nam</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => setData({ ...data, gender: 1 })}
+                style={{
+                  flexDirection: "row",
+                  paddingRight: 50,
+                  paddingBottom: 16,
+                }}
+              >
+                <View
+                  style={{
+                    borderWidth: 5,
+                    borderColor: data.gender === 1 ? "#40A2E3" : "#333",
+                    width: 20,
+                    height: 20,
+                    borderRadius: 50,
+                    marginRight: 5,
+                  }}
+                />
+                <Text>Nữ</Text>
+              </TouchableOpacity>
+            </View>
 
             <InputCustom
               label="Email ..."

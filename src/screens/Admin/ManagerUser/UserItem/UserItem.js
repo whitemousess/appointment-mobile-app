@@ -11,7 +11,7 @@ function UserItem({ data, refreshing, onRefresh, onDelete }) {
       style={{ height: "100%" }}
       data={data}
       renderItem={({ item }) => renderItem(item)}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item._id}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }

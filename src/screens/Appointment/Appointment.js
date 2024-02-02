@@ -80,12 +80,21 @@ function Appointment() {
       arrTime.push(i + ":00");
     }
     appointmentService
-      .getAppointment({ date: chosenDate.toLocaleDateString("vi-vn") })
+      .getAppointment({
+        doctorId: data._id,
+        date: chosenDate.toLocaleDateString("vi-vn"),
+      })
       .then((res) => {
-        const reservedTimes = res.data.map((item) => item.time);
+        const reservedTimes = res.data.map((item) => {
+          if (item.status === 0) {
+            return item.time;
+          }
+        });
         const availableTimes = arrTime.filter(
           (time) => !reservedTimes.includes(time)
         );
+
+        
         setTimeSelect(availableTimes);
         setChosenTime(availableTimes[0]);
       })

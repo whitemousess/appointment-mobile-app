@@ -2,9 +2,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 
-function Item({ data }) {
-  const convertDate = new Date(data.date);
-
+function Item({ data, onDelete }) {
+  console.log(data)
   const renderLeftActions = () => {
     return (
       <View style={{ flexDirection: "row", marginVertical: 10 }}>
@@ -17,12 +16,14 @@ function Item({ data }) {
             backgroundColor: "#f87171",
           }}
           activeOpacity={0.8}
+          onPress={() => onDelete(data._id)}
         >
           <MaterialIcons name="delete" size={24} color="white" />
         </TouchableOpacity>
       </View>
     );
   };
+
   return (
     <Swipeable renderRightActions={renderLeftActions}>
       <View
@@ -43,12 +44,13 @@ function Item({ data }) {
           }}
         >
           <Image
-            source={{ uri: data.imageUrl }}
+            source={{ uri: data.currentUserId.imageUrl }}
             style={{ width: 80, height: 80, marginRight: 10 }}
           />
           <View>
-            <Text>{data.fullName}</Text>
-            <Text>{convertDate.toLocaleDateString("vi-VN")}</Text>
+            <Text>{"Bác sĩ : " + data.doctorId.fullName}</Text>
+            <Text>{"Người khám : " + data.currentUserId.fullName}</Text>
+            <Text>{data.time + " - " + data.date}</Text>
           </View>
         </View>
         <View

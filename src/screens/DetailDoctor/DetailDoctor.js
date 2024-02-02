@@ -1,11 +1,12 @@
 import { useRoute } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/native";
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 
 import SafeView from "~/components/SafeView";
 import Header from "./Header";
 import RecentPost from "~/components/RecentPost";
 import { ScrollView } from "react-native";
+import { AuthContext } from "~/shared/AuthProvider";
 
 function DetailDoctor() {
   const route = useRoute();
@@ -20,7 +21,7 @@ function DetailDoctor() {
   return (
     <SafeView>
       <ScrollView style={{ height: "100%" }}>
-        <Header data={data}/>
+        <Header data={data} />
         <RecentPost />
       </ScrollView>
     </SafeView>

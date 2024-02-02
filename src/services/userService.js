@@ -48,17 +48,22 @@ export const getDoctor = async ({ page, perPage, specialist, fullName }) => {
         fullName,
       },
     });
-    return res;
+    return res.data;
   } catch (error) {
     return error;
   }
 };
 
-export const getUser = async () => {
+export const getUser = async ({ page, perPage, fullName }) => {
   try {
     const token = await getToken();
     const res = await httpRequest.get(`auth/get-user`, {
       headers: { Authorization: "Bearer " + token },
+      params: {
+        page,
+        per_page: perPage,
+        fullName,
+      },
     });
     return res.data;
   } catch (error) {
@@ -71,6 +76,21 @@ export const deleteUser = async ({ id }) => {
     const token = await getToken();
     const res = await httpRequest.delete(`auth/user/delete/${id}`, {
       headers: { Authorization: "Bearer " + token },
+    });
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const editUser = async ({ id, data }) => {
+  try {
+    const token = await getToken();
+    const res = await httpRequest.put(`auth/edit-user/${id}`, data, {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "multipart/form-data",
+      },
     });
     return res.data;
   } catch (error) {

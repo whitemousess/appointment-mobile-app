@@ -10,10 +10,11 @@ import { useFocusEffect } from "@react-navigation/native";
 function ManagerUser() {
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState([]);
+  const [search, setSearch] = useState("");
 
   const fetch = () => {
     userService
-      .getUser()
+      .getUser({ fullName: search })
       .then((user) => {
         setData(user.data);
       })
@@ -27,11 +28,15 @@ function ManagerUser() {
       fetch();
     }, 1000);
   }, []);
-  
+
+  const handleSearch = (text) => {
+    setSearch(text);
+  };
+
   useFocusEffect(
     useCallback(() => {
       fetch();
-    }, [])
+    }, [search])
   );
 
   const onDelete = (id) => {
@@ -52,9 +57,6 @@ function ManagerUser() {
       >
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
             borderWidth: 1,
             borderColor: "#ccc",
             borderRadius: 10,
@@ -65,18 +67,9 @@ function ManagerUser() {
           <TextInput
             placeholder="Tìm kiếm theo tên ..."
             style={{ paddingVertical: 10, paddingHorizontal: 10 }}
+            value={search}
+            onChangeText={handleSearch}
           />
-          <TouchableOpacity
-            activeOpacity={1}
-            style={{
-              backgroundColor: "#000",
-              paddingHorizontal: 16,
-              paddingVertical: 8,
-              borderRadius: 10,
-            }}
-          >
-            <Feather name="search" size={24} color="white" />
-          </TouchableOpacity>
         </View>
 
         <UserItem

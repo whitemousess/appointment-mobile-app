@@ -8,10 +8,11 @@ import * as appointmentService from "~/services/appointmentService";
 
 function ListAppointment() {
   const [data, setData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetch = () => {
     appointmentService
-      .getAppointment({})
+      .getMyAppointment()
       .then((res) => {
         setData(res.data);
       })
@@ -19,6 +20,14 @@ function ListAppointment() {
         console.log(err);
       });
   };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      fetch();
+    }, 1000);
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -29,7 +38,7 @@ function ListAppointment() {
   return (
     <SafeView>
       <Text style={{ marginLeft: 10 }}>Lịch hẹn khám</Text>
-      <ListItem data={data} />
+      <ListItem data={data} refreshing={refreshing} onRefresh={onRefresh} />
     </SafeView>
   );
 }
