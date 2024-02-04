@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import user from "~/assets/img/user.png";
 
 function ListItem({ data }) {
   const navigation = useNavigation();
@@ -16,17 +17,19 @@ function ListItem({ data }) {
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("DetailDoctor", {
-            doctorId: data.id,
+            data: data.doctorId,
           })
         }
         style={{ padding: 10, flexDirection: "row" }}
         activeOpacity={0.8}
       >
         <Image
-          source={data.imageUrl}
+          source={
+            data.doctorId.imageUrl ? { uri: data.doctorId.imageUrl } : user
+          }
           style={{ width: 50, height: 50, borderRadius: 50, marginRight: 10 }}
         />
-        <Text style={{ fontWeight: "bold" }}>{data.Name}</Text>
+        <Text style={{ fontWeight: "bold" }}>{data.doctorId.fullName}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         activeOpacity={0.8}
@@ -36,9 +39,14 @@ function ListItem({ data }) {
           })
         }
       >
-        <Image source={data.imagePost} style={{ width: "auto", height: 400 }} />
+        {data.imageUrl && (
+          <Image
+            source={{ uri: data.imageUrl }}
+            style={{ width: "auto", height: 400 }}
+          />
+        )}
         <View style={{ paddingVertical: 16, paddingHorizontal: 6 }}>
-          <Text>{data.Status}</Text>
+          <Text>{data.status}</Text>
         </View>
       </TouchableOpacity>
     </View>

@@ -2,6 +2,7 @@ import { Feather, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
+import user from "~/assets/img/user.png";
 
 function Item({ data, onDelete }) {
   const navigation = useNavigation();
@@ -57,19 +58,10 @@ function Item({ data, onDelete }) {
           overflow: "hidden",
         }}
       >
-        {data.imageUrl ? (
-          <Image
-            source={{ uri: data.imageUrl }}
-            style={{ width: 80, height: 80, marginRight: 10 }}
-          />
-        ) : (
-          <FontAwesome6
-            name="user-doctor"
-            size={80}
-            color="black"
-            style={{ padding: 5, marginRight: 10, borderRightWidth: 1 }}
-          />
-        )}
+        <Image
+          source={data.imageUrl ? { uri: data.imageUrl } : user}
+          style={{ width: 80, height: 80, marginRight: 10 }}
+        />
         <View>
           <Text>{data.fullName}</Text>
           <Text>{data.specialist}</Text>

@@ -1,10 +1,14 @@
 import { FlatList, RefreshControl } from "react-native";
 import Item from "./Item";
+import ClientEmpty from "~/components/ClientEmpty";
 
-function ListHistory({ data ,onRefresh,refreshing }) {
+function ListHistory({ data = [], onRefresh, refreshing, onCancel, onDelete }) {
+  if (data.length == 0) {
+    return <ClientEmpty title={"Không có dữ liệu"} />;
+  }
 
   const renderItem = (item) => {
-    return <Item data={item} />;
+    return <Item data={item} onCancel={onCancel} onDelete={onDelete} />;
   };
 
   return (

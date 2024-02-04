@@ -8,118 +8,21 @@ import {
 } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
+import { AuthContext } from "~/shared/AuthProvider";
 import ItemDoctor from "./ItemDoctor";
 import RecentPost from "~/components/RecentPost";
-import Doctor from "~/assets/img/doctor.jpg";
 import HeaderScreen from "~/components/HeaderScreen";
-import * as userService from "~/services/userService";
 import ButtonPost from "~/components/PostStatus/ButtonPost";
-import { AuthContext } from "~/shared/AuthProvider";
+
+import * as userService from "~/services/userService";
+import * as recentPostService from "~/services/recentPostService";
 
 function Home() {
   const { currentInfo } = useContext(AuthContext);
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
   const [dataDoctor, setDataDoctor] = useState([]);
-
-  const dataPost = [
-    {
-      id: 1,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 2,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 3,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 4,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 5,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 6,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 7,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 8,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 9,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 10,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 11,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 12,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-  ];
+  const [dataPost, setDataPost] = useState([]);
 
   const fetch = () => {
     userService
@@ -130,6 +33,19 @@ function Home() {
       .catch((error) => {
         console.log(error);
       });
+
+    recentPostService
+      .getAllStatus()
+      .then((status) => {
+        setDataPost(status.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const refreshData = () => {
+    fetch();
   };
 
   useFocusEffect(
@@ -199,7 +115,7 @@ function Home() {
           >
             Bài viết
           </Text>
-          {currentInfo.role === 1 && <ButtonPost />}
+          {currentInfo.role === 1 && <ButtonPost refreshData={refreshData} />}
         </View>
 
         <RecentPost data={dataPost} />

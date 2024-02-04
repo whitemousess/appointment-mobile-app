@@ -1,6 +1,6 @@
-import { FontAwesome6 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import user from "~/assets/img/user.png";
 
 function Item({ data }) {
   const navigation = useNavigation();
@@ -25,22 +25,10 @@ function Item({ data }) {
         }
         style={{ width: "40%" }}
       >
-        {data.imageUrl ? (
-          <Image
-            source={{ uri: data.imageUrl }}
-            style={{ width: 150, height: 150, borderRadius: 10 }}
-          />
-        ) : (
-          <FontAwesome6
-            name="user-doctor"
-            size={150}
-            color="black"
-            style={{
-              borderRadius: 10,
-              padding: 10,
-            }}
-          />
-        )}
+        <Image
+          source={data.imageUrl ? { uri: data.imageUrl } : user}
+          style={{ width: 150, height: 150, borderRadius: 10 }}
+        />
       </TouchableOpacity>
       <View style={{ width: "50%", marginLeft: 20 }}>
         <Text style={{ fontSize: 20, fontWeight: 500 }}>{data.fullName}</Text>

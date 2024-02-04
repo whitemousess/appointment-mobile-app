@@ -1,4 +1,4 @@
-import { AntDesign, EvilIcons, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Entypo, EvilIcons, Ionicons } from "@expo/vector-icons";
 import React, { useContext, useState } from "react";
 import {
   Modal,
@@ -10,20 +10,30 @@ import {
   ScrollView,
   Image,
 } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 
 import { AuthContext } from "~/shared/AuthProvider";
-import UploadImage from "../UploadImage";
+import * as recentPostService from "~/services/recentPostService";
+import user from "~/assets/img/user.png";
 
 const ModalPost = ({ visible, onClose }) => {
   const { currentInfo } = useContext(AuthContext);
   const [data, setData] = useState({
-    status: "",
     imageUrl: "",
+    status: "",
   });
   const [submit, setSubmit] = useState(false);
 
-  const handleImageUpload = (imageUrl) => {
-    setData({ ...data, imageUrl });
+  const TakePicture = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setData({ ...data, imageUrl: result.assets[0].uri });
+    }
   };
 
   const handleChange = (text) => {
@@ -39,9 +49,25 @@ const ModalPost = ({ visible, onClose }) => {
 
   const handleSubmit = () => {
     if (submit) {
-      console.log(comment);
-      setSubmit(false);
-      setData("");
+      const formData = new FormData();
+      formData.append("status", data.status);
+      if (data.imageUrl) {
+        formData.append("imageUrl", {
+          uri: data.imageUrl,
+          type: "image/png",
+          name: "image.png",
+        });
+      }
+
+      recentPostService
+        .postStatus({ data: formData })
+        .then((res) => {
+          onClose();
+          setData({});
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
@@ -53,36 +79,55 @@ const ModalPost = ({ visible, onClose }) => {
       onRequestClose={onClose}
     >
       <View style={styles.header}>
-        <TouchableOpacity onPress={onClose} style={{ marginLeft: 10 }}>
+        <TouchableOpacity
+          onPress={() => {
+            onClose();
+            setData({});
+          }}
+          style={{ marginLeft: 10 }}
+        >
           <AntDesign name="close" size={28} color="white" />
         </TouchableOpacity>
         <Text style={{ color: "white", fontSize: 18 }}>Tạo bài viết</Text>
-        <TouchableOpacity onPress={() => {}} style={{ marginRight: 10 }}>
+        <TouchableOpacity onPress={handleSubmit} style={{ marginRight: 10 }}>
           <Ionicons name="send" size={24} color={submit ? "#3468C0" : "#ccc"} />
         </TouchableOpacity>
       </View>
 
       <ScrollView style={styles.body}>
         <View style={styles.privacy}>
-          {currentInfo.imageUrl ? (
-            <Image
-              source={{ uri: currentInfo.imageUrl }}
-              style={{ width: 50, height: 50, borderRadius: 50 }}
-            />
-          ) : (
-            <EvilIcons name="user" size={50} color="white" />
-          )}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            {currentInfo.imageUrl ? (
+              <Image
+                source={
+                  currentInfo.imageUrl ? { uri: currentInfo.imageUrl } : user
+                }
+                style={{ width: 50, height: 50, borderRadius: 50 }}
+              />
+            ) : (
+              <EvilIcons name="user" size={50} color="white" />
+            )}
 
-          <Text
+            <Text
+              style={{
+                color: "white",
+                fontSize: 16,
+                fontWeight: "700",
+                marginLeft: 10,
+              }}
+            >
+              {currentInfo.fullName}
+            </Text>
+          </View>
+          <TouchableOpacity
+            activeOpacity={1}
             style={{
-              color: "white",
-              fontSize: 16,
-              fontWeight: "700",
-              marginLeft: 10,
+              padding: 10,
             }}
+            onPress={TakePicture}
           >
-            {currentInfo.fullName}
-          </Text>
+            <Entypo name="image" size={24} color="#DCFFB7" />
+          </TouchableOpacity>
         </View>
 
         <TextInput
@@ -92,7 +137,20 @@ const ModalPost = ({ visible, onClose }) => {
           multiline={true}
           value={data.status}
           onChangeText={(text) => handleChange(text)}
+          autoFocus={true}
         />
+
+        {data.imageUrl && (
+          <Image
+            source={{ uri: data.imageUrl }}
+            style={{
+              height: 500,
+              width: "auto",
+              resizeMode: "cover",
+              marginHorizontal: 10,
+            }}
+          />
+        )}
       </ScrollView>
     </Modal>
   );
@@ -109,14 +167,16 @@ const styles = StyleSheet.create({
   },
 
   body: {
-    height: "86%",
+    height: 500,
     backgroundColor: "#2c2f2f",
   },
 
   privacy: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     marginTop: 10,
+    marginHorizontal: 10,
   },
 
   btnActive: {
@@ -134,10 +194,9 @@ const styles = StyleSheet.create({
   },
 
   textInput: {
-    marginLeft: 14,
-    marginTop: 24,
-    marginRight: 14,
-    marginBottom: 90,
+    marginHorizontal: 14,
+    marginVertical: 24,
+
     fontSize: 18,
     color: "#fff",
   },

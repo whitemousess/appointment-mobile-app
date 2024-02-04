@@ -1,8 +1,9 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
+import user from "~/assets/img/user.png";
 
-function Item({ data }) {
+function Item({ data, onDelete }) {
   const renderLeftActions = () => {
     return (
       <View
@@ -17,6 +18,7 @@ function Item({ data }) {
             backgroundColor: "#f87171",
           }}
           activeOpacity={0.8}
+          onPress={() => onDelete(data._id)}
         >
           <MaterialIcons name="delete" size={24} color="white" />
         </TouchableOpacity>
@@ -28,17 +30,29 @@ function Item({ data }) {
     <Swipeable renderRightActions={renderLeftActions}>
       <View
         style={{
+          flexDirection: "row",
+          alignItems: "center",
+
           borderWidth: 1,
           borderColor: "#ccc",
           borderRadius: 10,
           marginVertical: 10,
-          paddingHorizontal: 10,
-          paddingVertical: 20,
           backgroundColor: "white",
+          paddingHorizontal: 4,
+          paddingVertical: 4,
         }}
       >
-        <Text>{data.fullName}</Text>
-        <Text>{data.content}</Text>
+        <Image
+          source={
+            data.doctorId.imageUrl ? { uri: data.doctorId.imageUrl } : user
+          }
+          style={{ width: 80, height: 80, marginRight: 10 }}
+        />
+
+        <View>
+          <Text>{data.doctorId.fullName}</Text>
+          <Text>{data.status}</Text>
+        </View>
       </View>
     </Swipeable>
   );

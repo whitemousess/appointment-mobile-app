@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import ModalPost from "./ModalPost";
 
-function ButtonPost() {
+function ButtonPost({ refreshData }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const openModal = () => {
@@ -12,6 +12,7 @@ function ButtonPost() {
 
   const closeModal = () => {
     setModalVisible(false);
+    refreshData();
   };
 
   return (

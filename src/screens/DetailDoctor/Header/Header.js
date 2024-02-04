@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
+import user from "~/assets/img/user.png";
 
 function Header({ data }) {
   const navigation = useNavigation();
@@ -8,9 +9,7 @@ function Header({ data }) {
     <View style={{ marginHorizontal: 10 }}>
       <View style={{ flexDirection: "column", alignItems: "center" }}>
         <Image
-          source={{
-            uri: data.imageUrl,
-          }}
+          source={data.imageUrl ? { uri: data.imageUrl } : user}
           style={{ width: 250, height: 250, borderRadius: 999 }}
         />
         <Text style={{ marginVertical: 16, fontSize: 18, fontWeight: 600 }}>

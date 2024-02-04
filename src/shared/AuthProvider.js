@@ -85,7 +85,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const editProfile = async (data) => {
-    console.log(data)
     const validateEmail = (email) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
@@ -102,16 +101,23 @@ export const AuthProvider = ({ children }) => {
       formData.append("email", data.email);
       formData.append("address", data.address);
       formData.append("phone", data.phone);
-      formData.append("imageUrl", {
-        uri: data.imageUrl,
-        type: "image/png",
-        name: "image.png",
-      });
-
+      formData.append("gender", data.gender);
+      {
+        admin && formData.append("specialist", data.specialist);
+      }
+      {
+        data.imageUrl &&
+          formData.append("imageUrl", {
+            uri: data.imageUrl,
+            type: "image/png",
+            name: "image.png",
+          });
+      }
       await userService
-        .editUser({ id: data._id, data: data })
+        .editUser({ id: data._id, data: formData })
         .then((res) => {
           if (res.data) {
+            if (!admin) setCurrentInfo(res.data);
             Toast.show({
               type: "success",
               text1: "Thay đổi thành công",
@@ -146,20 +152,26 @@ export const AuthProvider = ({ children }) => {
   const isLogged = async () => {
     try {
       setIsLoading(true);
-      const UserInfo = await AsyncStorage.getItem("currentUser");
       const Token = await AsyncStorage.getItem("token");
 
-      if (Token) {
+      const res = await userService.getCurrentUser({});
+      if (res.data) {
         setToken(Token);
-        setCurrentInfo(JSON.parse(UserInfo));
-        if (JSON.parse(UserInfo).role === 0) {
+        setCurrentInfo(res.data);
+        if (res.data.role === 0) {
           setAdmin(true);
         }
-        if (JSON.parse(UserInfo).role === 1) {
+        if (res.data.role === 1) {
           setDoctor(true);
         }
+        setIsLoading(false);
+      } else {
+        setToken(false);
+        setCurrentInfo({});
+        setAdmin(false);
+        setDoctor(false);
+        setIsLoading(false);
       }
-      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }

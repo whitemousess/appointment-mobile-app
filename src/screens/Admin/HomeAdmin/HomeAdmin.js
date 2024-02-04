@@ -5,7 +5,7 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   RefreshControl,
   ScrollView,
@@ -14,6 +14,7 @@ import {
 } from "react-native";
 
 import * as userService from "~/services/userService";
+import * as recentPostService from "~/services/recentPostService";
 import * as appointmentService from "~/services/appointmentService";
 
 function HomeAdmin() {
@@ -21,6 +22,7 @@ function HomeAdmin() {
   const [totalDoctor, setTotalDoctor] = useState(0);
   const [totalUser, setTotalUser] = useState(0);
   const [totalAppointment, setTotalAppointment] = useState(0);
+  const [totalPost, setTotalPost] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetch = () => {
@@ -46,6 +48,15 @@ function HomeAdmin() {
       .getAppointment({})
       .then((res) => {
         setTotalAppointment(res.data.length);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    recentPostService
+      .getAllStatus({})
+      .then((res) => {
+        setTotalPost(res.data.length);
       })
       .catch((err) => {
         console.log(err);
@@ -141,7 +152,9 @@ function HomeAdmin() {
         }}
       >
         <MaterialCommunityIcons name="bird" size={50} color="black" />
-        <Text style={{ marginTop: 10, fontSize: 16 }}>32 bài viết</Text>
+        <Text style={{ marginTop: 10, fontSize: 16 }}>
+          {totalPost} bài viết
+        </Text>
       </TouchableOpacity>
     </ScrollView>
   );

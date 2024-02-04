@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { Image, StatusBar, Text, TouchableOpacity, View } from "react-native";
 
 import { AuthContext } from "~/shared/AuthProvider";
+import user from "~/assets/img/user.png";
 
 function HeaderScreen() {
   const { currentInfo } = useContext(AuthContext);
@@ -26,7 +27,7 @@ function HeaderScreen() {
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         {currentInfo.imageUrl ? (
           <Image
-            source={{ uri: currentInfo.imageUrl }}
+            source={currentInfo.imageUrl ? { uri: currentInfo.imageUrl } : user}
             style={{ width: 50, height: 50, borderRadius: 50 }}
           />
         ) : (

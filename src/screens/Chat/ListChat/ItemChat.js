@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { Image, Text, TouchableOpacity } from "react-native";
+import user from "~/assets/img/user.png";
 
 function ItemChat({ data }) {
   const navigation = useNavigation();
@@ -18,7 +19,7 @@ function ItemChat({ data }) {
       }}
     >
       <Image
-        source={data.imageUrl}
+        source={data.imageUrl ? { uri: data.imageUrl } : user}
         style={{
           width: 60,
           height: 60,

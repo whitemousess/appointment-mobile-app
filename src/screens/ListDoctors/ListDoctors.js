@@ -46,9 +46,9 @@ function ListDoctors() {
 
   const onScroll = (e) => {
     const location = e.nativeEvent.contentOffset.y;
-    if (location > 200) {
+    if (location > 50) {
       setVisibleHeader(true);
-    } else if(location < 100) {
+    } else if (location === 0) {
       setVisibleHeader(false);
     }
   };
@@ -71,7 +71,7 @@ function ListDoctors() {
   return (
     <View
       style={{
-        marginBottom: visibleHeader && StatusBar.currentHeight + 170,
+        marginBottom: (visibleHeader && StatusBar.currentHeight + 170) || 200,
       }}
     >
       {!visibleHeader && <HeaderScreen />}
@@ -84,7 +84,7 @@ function ListDoctors() {
           borderColor: "#ccc",
           borderRadius: 10,
           marginHorizontal: 10,
-          marginTop: StatusBar.currentHeight || 20,
+          marginTop: !visibleHeader ? 10 : StatusBar.currentHeight || 20,
         }}
         value={search}
         onChangeText={handleSearch}

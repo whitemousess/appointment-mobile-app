@@ -32,7 +32,6 @@ function EditProfile() {
     address: currentInfo.address,
   });
   const [invalidFields, setInvalidFields] = useState({});
-
   const handleChange = (key, value) => {
     setData({ ...data, [key]: value });
     setInvalidFields({ ...invalidFields, [key]: false });
@@ -41,7 +40,7 @@ function EditProfile() {
   const handleSubmit = () => {
     let newInvalidFields = {};
     Object.keys(data).forEach((key) => {
-      if (data[key].trim() === "") {
+      if (data[key] === "") {
         newInvalidFields[key] = true;
       }
     });
@@ -206,7 +205,6 @@ function EditProfile() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 24,
   },
   imageRegister: {
     display: "flex",

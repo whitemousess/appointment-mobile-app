@@ -36,6 +36,18 @@ export const newDoctor = async ({ data }) => {
   }
 };
 
+export const getCurrentUser = async () => {
+  try {
+    const token = await getToken();
+    const res = await httpRequest.get(`auth/current-user`, {
+      headers: { Authorization: "Bearer " + token },
+    });
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const getDoctor = async ({ page, perPage, specialist, fullName }) => {
   try {
     const token = await getToken();

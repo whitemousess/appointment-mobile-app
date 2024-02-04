@@ -18,6 +18,19 @@ import { AuthContext } from "~/shared/AuthProvider";
 import SafeView from "~/components/SafeView";
 import HeaderGoBack from "~/components/HeaderGoBack";
 import UploadImage from "~/components/UploadImage";
+import { Picker } from "@react-native-picker/picker";
+
+const optionSpecialist = [
+  {
+    value: "Khoa thần kinh",
+  },
+  {
+    value: "Khoa tai mũi họng",
+  },
+  {
+    value: "Khoa tim mạch",
+  },
+];
 
 function EditDoctor() {
   const route = useRoute();
@@ -39,7 +52,9 @@ function EditDoctor() {
     phone: dataInfo.phone,
     gender: dataInfo.gender,
     address: dataInfo.address,
+    specialist: dataInfo.specialist,
   });
+
   const [invalidFields, setInvalidFields] = useState({});
 
   const handleChange = (key, value) => {
@@ -54,7 +69,7 @@ function EditDoctor() {
   const handleSubmit = () => {
     let newInvalidFields = {};
     Object.keys(data).forEach((key) => {
-      if (data[key].trim() === "") {
+      if (data[key] === "") {
         newInvalidFields[key] = true;
       }
     });
@@ -206,6 +221,27 @@ function EditDoctor() {
               isError={invalidFields["address"]}
             />
 
+            <Picker
+              itemStyle={{
+                height: 150,
+                borderWidth: 1,
+                borderColor: "#ccc",
+                borderRadius: 10,
+                marginBottom: 10,
+              }}
+              selectedValue={data.specialist}
+              onValueChange={(itemValue) =>
+                setData({ ...data, specialist: itemValue })
+              }
+            >
+              {optionSpecialist.map((item, index) => (
+                <Picker.Item
+                  key={index}
+                  label={item.value}
+                  value={item.value}
+                />
+              ))}
+            </Picker>
             <ButtonCustom label="Thay đổi" onPress={handleSubmit} />
           </View>
         </SafeView>

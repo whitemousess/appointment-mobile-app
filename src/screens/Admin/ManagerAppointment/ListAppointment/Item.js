@@ -1,9 +1,9 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
+import user from "~/assets/img/user.png";
 
 function Item({ data, onDelete }) {
-  console.log(data)
   const renderLeftActions = () => {
     return (
       <View style={{ flexDirection: "row", marginVertical: 10 }}>
@@ -44,7 +44,9 @@ function Item({ data, onDelete }) {
           }}
         >
           <Image
-            source={{ uri: data.currentUserId.imageUrl }}
+            source={
+              data.doctorId.imageUrl ? { uri: data.doctorId.imageUrl } : user
+            }
             style={{ width: 80, height: 80, marginRight: 10 }}
           />
           <View>

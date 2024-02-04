@@ -64,7 +64,38 @@ export const getMyAppointment = async () => {
 export const deleteAppointment = async ({ id }) => {
   try {
     const token = await getToken();
-    const res = await httpRequest.delete(`appointment/delete-appointment/${id}`, {
+    const res = await httpRequest.delete(
+      `appointment/delete-appointment/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const cancelAppointment = async ({ id }) => {
+  try {
+    const token = await getToken();
+    const res = await httpRequest.get(`appointment/cancel-appointment/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const successAppointment = async ({ id }) => {
+  try {
+    const token = await getToken();
+    const res = await httpRequest.get(`appointment/success-appointment/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

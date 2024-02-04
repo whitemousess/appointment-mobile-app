@@ -2,6 +2,7 @@ import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
+import user from "~/assets/img/user.png";
 
 function Item({ data, onDelete }) {
   const navigation = useNavigation();
@@ -57,7 +58,7 @@ function Item({ data, onDelete }) {
         }}
       >
         <Image
-          source={{ uri: data.imageUrl }}
+          source={data.imageUrl ? { uri: data.imageUrl } : user}
           style={{ width: 80, height: 80, marginRight: 10 }}
         />
         <Text>{data.fullName}</Text>

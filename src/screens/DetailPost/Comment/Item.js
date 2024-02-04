@@ -1,6 +1,8 @@
 import { Image, Text, View } from "react-native";
+import user from "~/assets/img/user.png";
 
 function Item({ data }) {
+  console.log(data.currentUserId);
 
   return (
     <View
@@ -12,7 +14,7 @@ function Item({ data }) {
       }}
     >
       <Image
-        source={{ uri: data.imageUrl }}
+        source={data.currentUserId.imageUrl ? { uri: data.currentUserId.imageUrl } : user}
         style={{ width: 50, height: 50, borderRadius: 50, marginRight: 10 }}
       />
       <View
@@ -23,8 +25,10 @@ function Item({ data }) {
           paddingVertical: 5,
         }}
       >
-        <Text style={{ marginBottom: 4, fontWeight: 600 }}>{data.name}</Text>
-        <Text>{data.content}</Text>
+        <Text style={{ marginBottom: 4, fontWeight: 600 }}>
+          {data.currentUserId.fullName}
+        </Text>
+        <Text>{data.comment}</Text>
       </View>
     </View>
   );

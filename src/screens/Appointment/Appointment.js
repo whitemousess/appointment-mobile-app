@@ -21,6 +21,7 @@ import HeaderGoBack from "~/components/HeaderGoBack";
 import { AuthContext } from "~/shared/AuthProvider";
 import * as appointmentService from "~/services/appointmentService";
 import Toast from "react-native-toast-message";
+import user from "~/assets/img/user.png";
 
 function Appointment() {
   const route = useRoute();
@@ -94,7 +95,6 @@ function Appointment() {
           (time) => !reservedTimes.includes(time)
         );
 
-        
         setTimeSelect(availableTimes);
         setChosenTime(availableTimes[0]);
       })
@@ -126,7 +126,7 @@ function Appointment() {
           >
             <View style={{ flexDirection: "row" }}>
               <Image
-                source={{ uri: data.imageUrl }}
+                source={data.imageUrl ? { uri: data.imageUrl } : user}
                 style={{
                   width: 100,
                   height: 100,

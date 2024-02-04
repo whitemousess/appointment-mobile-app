@@ -1,118 +1,47 @@
-import { ScrollView, Text, View } from "react-native";
-import { useContext } from "react";
+import { RefreshControl, ScrollView, Text, View } from "react-native";
+import { useCallback, useContext, useState } from "react";
 import { AuthContext } from "~/shared/AuthProvider";
+import { useFocusEffect } from "@react-navigation/native";
 
 import SafeView from "~/components/SafeView";
 import Header from "./Header";
 import RecentPost from "~/components/RecentPost";
-import Doctor from "~/assets/img/doctor.jpg";
 import ButtonPost from "~/components/PostStatus/ButtonPost";
+import * as recentPostService from "~/services/recentPostService";
 
 function Profile() {
   const { currentInfo } = useContext(AuthContext);
+  const [dataPost, setDataPost] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const dataPost = [
-    {
-      id: 1,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 2,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 3,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 4,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 5,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 6,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 7,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 8,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 9,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 10,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 11,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-    {
-      id: 12,
-      imageUrl: Doctor,
-      Name: "Name",
-      status: "Status",
-      imagePost: Doctor,
-      Status: "Có làm mới có ăn",
-    },
-  ];
+  const fetch = () => {
+    recentPostService
+      .getMyStatus({ id: currentInfo._id })
+      .then((res) => setDataPost(res.data))
+      .catch((err) => console.log(err));
+  };
+
+  useFocusEffect(useCallback(() => fetch(), []));
+
+  const refreshData = () => {
+    fetch();
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      fetch();
+    }, 1000);
+  }, []);
 
   return (
     <SafeView>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Header data={currentInfo} />
         <View
           style={{
@@ -131,7 +60,7 @@ function Profile() {
           >
             Bài viết
           </Text>
-          {currentInfo.role === 1 && <ButtonPost />}
+          {currentInfo.role === 1 && <ButtonPost refreshData={refreshData} />}
         </View>
         <RecentPost data={dataPost} />
       </ScrollView>

@@ -5,15 +5,15 @@ import {
 } from "@react-navigation/drawer";
 import { View, Image, Text, TouchableOpacity } from "react-native";
 import { AuthContext } from "~/shared/AuthProvider";
+import user from "~/assets/img/user.png";
 
 const CustomDrawerContent = (props) => {
   const { currentInfo, logOut } = useContext(AuthContext);
-
   return (
     <DrawerContentScrollView {...props}>
       <View style={{ alignItems: "center", marginVertical: 20 }}>
         <Image
-          source={{ uri: currentInfo.imageUrl }}
+          source={currentInfo.imageUrl ? { uri: currentInfo.imageUrl } : user}
           style={{ width: 80, height: 80, borderRadius: 50 }}
         />
         <Text style={{ marginTop: 10, fontSize: 16, fontWeight: "bold" }}>

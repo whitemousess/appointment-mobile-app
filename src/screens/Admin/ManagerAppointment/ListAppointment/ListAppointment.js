@@ -1,9 +1,14 @@
 import { FlatList, RefreshControl } from "react-native";
 import Item from "./Item";
+import ClientEmpty from "~/components/ClientEmpty";
 
-function ListAppointment({ data, refreshing, onRefresh ,onDelete}) {
+function ListAppointment({ data = [], refreshing, onRefresh, onDelete }) {
+  if (data.length == 0) {
+    return <ClientEmpty title={"Không có dữ liệu"} />;
+  }
+
   const renderItem = (item) => {
-    return <Item data={item} onDelete={onDelete}/>;
+    return <Item data={item} onDelete={onDelete} />;
   };
 
   return (
