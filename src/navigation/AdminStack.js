@@ -17,26 +17,42 @@ const Stack = createNativeStackNavigator();
 
 const DoctorStack = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="ManagerDoctor" component={ManagerDoctor} />
-      <Stack.Screen name="EditDoctor" component={EditDoctor} />
+    <Stack.Navigator>
+      <Stack.Screen
+        name="ManagerDoctor"
+        component={ManagerDoctor}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EditDoctor"
+        component={EditDoctor}
+        options={{
+          title: "",
+          headerBackTitle: "Trở về",
+        }}
+      />
     </Stack.Navigator>
   );
 };
 
 const UserStack = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="ManagerUser" component={ManagerUser} />
-      <Stack.Screen name="EditUser" component={EditUser} />
+    <Stack.Navigator>
+      <Stack.Screen
+        name="ManagerUser"
+        component={ManagerUser}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="EditUser"
+        component={EditUser}
+        options={{
+          title: "",
+          headerBackTitle: "Trở về",
+        }}
+      />
     </Stack.Navigator>
   );
 };

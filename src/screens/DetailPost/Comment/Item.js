@@ -2,8 +2,6 @@ import { Image, Text, View } from "react-native";
 import user from "~/assets/img/user.png";
 
 function Item({ data }) {
-  console.log(data.currentUserId);
-
   return (
     <View
       style={{

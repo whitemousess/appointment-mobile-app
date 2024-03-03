@@ -115,7 +115,7 @@ function Appointment() {
         }}
       >
         <HeaderGoBack title={"Hẹn lịch khám"} />
-        <ScrollView style={{ height: "100%" }}>
+        <ScrollView style={{ height: "100%" }} showsVerticalScrollIndicator={false}>
           <View
             style={{
               flexDirection: "row",

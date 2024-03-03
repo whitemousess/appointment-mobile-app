@@ -1,13 +1,21 @@
 import { useCallback, useEffect, useState } from "react";
-import { StatusBar, TextInput, TouchableOpacity, View } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import {
+  StatusBar,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 import HeaderScreen from "~/components/HeaderScreen";
 import ListItem from "./ListItem";
 import Diseases from "./Diseases";
 import * as userService from "~/services/userService";
+import { AntDesign } from "@expo/vector-icons";
 
 function ListDoctors() {
+  const navigation = useNavigation();
   const [visibleHeader, setVisibleHeader] = useState(false);
   const [dataDoctor, setDataDoctor] = useState([]);
   const [specialistSelected, setSpecialistSelected] = useState("");
@@ -74,29 +82,65 @@ function ListDoctors() {
         marginBottom: (visibleHeader && StatusBar.currentHeight + 170) || 200,
       }}
     >
-      {!visibleHeader && <HeaderScreen />}
-      <TextInput
-        placeholder="Tìm kiếm theo tên ..."
-        style={{
-          paddingVertical: 16,
-          paddingHorizontal: 10,
-          borderWidth: 1,
-          borderColor: "#ccc",
-          borderRadius: 10,
-          marginHorizontal: 10,
-          marginTop: !visibleHeader ? 10 : StatusBar.currentHeight || 20,
-        }}
-        value={search}
-        onChangeText={handleSearch}
-      />
+      {!visibleHeader && (
+        <>
+          <HeaderScreen />
+          <TextInput
+            placeholder="Tìm kiếm theo tên ..."
+            style={{
+              paddingVertical: 16,
+              paddingHorizontal: 10,
+              borderWidth: 1,
+              borderColor: "#ccc",
+              borderRadius: 10,
+              marginHorizontal: 10,
+              marginTop: 10,
+            }}
+            value={search}
+            onChangeText={handleSearch}
+          />
+        </>
+      )}
+
       <View
         style={{
           borderBottomWidth: 1,
           borderColor: "#ccc",
+          marginTop: !visibleHeader ? 10 : StatusBar.currentHeight || 20,
           marginHorizontal: 10,
         }}
       >
         <Diseases onFilter={onFilter} selected={specialistSelected} />
+      </View>
+
+      <View
+        style={{
+          marginHorizontal: 10,
+          marginVertical: 10,
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#AAD7D9",
+            width: "100%",
+            paddingVertical: 24,
+            borderRadius: 10,
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+          onPress={() => navigation.navigate('PredictDiseases')}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: 500,
+              marginRight: 10,
+            }}
+          >
+            Chẩn đoán theo bệnh
+          </Text>
+          <AntDesign name="search1" size={24} color="black" />
+        </TouchableOpacity>
       </View>
 
       <ListItem

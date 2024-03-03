@@ -83,6 +83,15 @@ export const getUser = async ({ page, perPage, fullName }) => {
   }
 };
 
+export const getDoctorBySickName = async ({ sickName }) => {
+  try {
+    const res = await httpRequest.get(`auth/get-doctor/${sickName}`);
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const deleteUser = async ({ id }) => {
   try {
     const token = await getToken();

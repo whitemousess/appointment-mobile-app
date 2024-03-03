@@ -51,7 +51,6 @@ function EditUser() {
     setData({ ...data, imageUrl });
   };
 
-
   const handleSubmit = () => {
     let newInvalidFields = {};
     Object.keys(data).forEach((key) => {
@@ -72,8 +71,6 @@ function EditUser() {
       <ScrollView style={styles.container}>
         <SafeView>
           <View style={styles.contentRegister}>
-            <HeaderGoBack title={`Thay đổi thông tin của ${data.fullName}`} />
-
             <UploadImage onImageUpload={handleImageUpload} />
 
             <InputCustom
@@ -119,7 +116,7 @@ function EditUser() {
               isError={invalidFields["fullName"]}
             />
 
-<View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row" }}>
               <TouchableOpacity
                 onPress={() => setData({ ...data, gender: 0 })}
                 style={{

@@ -104,6 +104,7 @@ export const AuthProvider = ({ children }) => {
       formData.append("gender", data.gender);
       {
         admin && formData.append("specialist", data.specialist);
+        admin && formData.append("sicks", data.sicks);
       }
       {
         data.imageUrl &&

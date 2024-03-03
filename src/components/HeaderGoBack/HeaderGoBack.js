@@ -16,7 +16,6 @@ function HeaderGoBack({ title }) {
         borderBottomWidth: 1,
         borderBottomColor: "#ccc",
         marginBottom: 10,
-        marginTop: 24,
       }}
     >
       <Ionicons name="chevron-back" size={24} color="black" />

@@ -32,6 +32,50 @@ const optionSpecialist = [
   },
 ];
 
+const optionSicks = [
+  "Fungal infection",
+  "Allergy",
+  "GERD",
+  "Chronic cholestasis",
+  "Drug Reaction",
+  "Peptic ulcer diseae",
+  "AIDS",
+  "Diabetes",
+  "Gastroenteritis",
+  "Bronchial Asthma",
+  "Hypertension",
+  "Migraine",
+  "Cervical spondylosis",
+  "Paralysis (brain hemorrhage)",
+  "Jaundice",
+  "Malaria",
+  "Chicken pox",
+  "Dengue",
+  "Typhoid",
+  "hepatitis A",
+  "Hepatitis B",
+  "Hepatitis C",
+  "Hepatitis D",
+  "Hepatitis E",
+  "Alcoholic hepatitis",
+  "Tuberculosis",
+  "Common Cold",
+  "Pneumonia",
+  "Dimorphic hemmorhoids(piles)",
+  "Heart attack",
+  "Varicose veins",
+  "Hypothyroidism",
+  "Hyperthyroidism",
+  "Hypoglycemia",
+  "Osteoarthristis",
+  "Arthritis",
+  "(vertigo) Paroymsal Positional Vertigo",
+  "Acne",
+  "Urinary tract infection",
+  "Psoriasis",
+  "Impetigo",
+];
+
 function EditDoctor() {
   const route = useRoute();
   const { editProfile } = useContext(AuthContext);
@@ -53,6 +97,7 @@ function EditDoctor() {
     gender: dataInfo.gender,
     address: dataInfo.address,
     specialist: dataInfo.specialist,
+    sicks: dataInfo.sicks,
   });
 
   const [invalidFields, setInvalidFields] = useState({});
@@ -60,6 +105,17 @@ function EditDoctor() {
   const handleChange = (key, value) => {
     setData({ ...data, [key]: value });
     setInvalidFields({ ...invalidFields, [key]: false });
+  };
+
+  const handleSicks = (value) => {
+    const index = data.sicks.indexOf(value);
+    if (index !== -1) {
+      const updatedSicks = data.sicks.filter((item) => item !== value);
+      setData({ ...data, sicks: updatedSicks });
+    } else {
+      const updatedSicks = [...data.sicks, value];
+      setData({ ...data, sicks: updatedSicks });
+    }
   };
 
   const handleImageUpload = (imageUrl) => {
@@ -86,10 +142,7 @@ function EditDoctor() {
       <ScrollView style={styles.container}>
         <SafeView>
           <View style={styles.contentRegister}>
-            <HeaderGoBack title={`Thay đổi thông tin của ${data.fullName}`} />
-
             <UploadImage onImageUpload={handleImageUpload} />
-
             <InputCustom
               label="Mật khẩu ..."
               password={true}
@@ -118,7 +171,6 @@ function EditDoctor() {
               }
               isError={invalidFields["rePassword"]}
             />
-
             <InputCustom
               label="Tên người dùng ..."
               value={data.fullName}
@@ -132,7 +184,6 @@ function EditDoctor() {
               }
               isError={invalidFields["fullName"]}
             />
-
             <View style={{ flexDirection: "row" }}>
               <TouchableOpacity
                 onPress={() => setData({ ...data, gender: 0 })}
@@ -176,7 +227,6 @@ function EditDoctor() {
                 <Text>Nữ</Text>
               </TouchableOpacity>
             </View>
-
             <InputCustom
               label="Email ..."
               value={data.email}
@@ -191,7 +241,6 @@ function EditDoctor() {
               }
               isError={invalidFields["email"]}
             />
-
             <InputCustom
               label="Số điện thoại ..."
               value={data.phone}
@@ -206,7 +255,6 @@ function EditDoctor() {
               }
               isError={invalidFields["email"]}
             />
-
             <InputCustom
               label="Địa chỉ ..."
               value={data.address}
@@ -220,7 +268,6 @@ function EditDoctor() {
               }
               isError={invalidFields["address"]}
             />
-
             <Picker
               itemStyle={{
                 height: 150,
@@ -242,6 +289,57 @@ function EditDoctor() {
                 />
               ))}
             </Picker>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 20,
+                fontWeight: "bold",
+                marginBottom: 10,
+              }}
+            >
+              Chọn bệnh lý
+            </Text>
+            <ScrollView
+              style={{
+                height: 500,
+                borderWidth: 1,
+                marginVertical: 10,
+                paddingHorizontal: 4,
+                borderColor: "#ccc",
+                borderRadius: 10,
+              }}
+              showsVerticalScrollIndicator={false}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                }}
+              >
+                {optionSicks.map((item) => {
+                  const checkExist = data.sicks.filter((sick) => sick === item);
+                  return (
+                    <TouchableOpacity
+                      key={item}
+                      style={{
+                        width: 150,
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        paddingVertical: 14,
+                        borderWidth: checkExist == item ? 3 : 1,
+                        borderColor: checkExist == item ? "#40A2E3" : "#ccc",
+                        borderRadius: 10,
+                        margin: 10,
+                      }}
+                      onPress={() => handleSicks(item)}
+                    >
+                      <Text>{item}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </ScrollView>
             <ButtonCustom label="Thay đổi" onPress={handleSubmit} />
           </View>
         </SafeView>
