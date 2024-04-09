@@ -16,65 +16,8 @@ import InputCustom from "~/components/InputCustom";
 import ButtonCustom from "~/components/ButtonCustom";
 import { AuthContext } from "~/shared/AuthProvider";
 import SafeView from "~/components/SafeView";
-import HeaderGoBack from "~/components/HeaderGoBack";
 import UploadImage from "~/components/UploadImage";
 import { Picker } from "@react-native-picker/picker";
-
-const optionSpecialist = [
-  {
-    value: "Khoa thần kinh",
-  },
-  {
-    value: "Khoa tai mũi họng",
-  },
-  {
-    value: "Khoa tim mạch",
-  },
-];
-
-const optionSicks = [
-  "Fungal infection",
-  "Allergy",
-  "GERD",
-  "Chronic cholestasis",
-  "Drug Reaction",
-  "Peptic ulcer diseae",
-  "AIDS",
-  "Diabetes",
-  "Gastroenteritis",
-  "Bronchial Asthma",
-  "Hypertension",
-  "Migraine",
-  "Cervical spondylosis",
-  "Paralysis (brain hemorrhage)",
-  "Jaundice",
-  "Malaria",
-  "Chicken pox",
-  "Dengue",
-  "Typhoid",
-  "hepatitis A",
-  "Hepatitis B",
-  "Hepatitis C",
-  "Hepatitis D",
-  "Hepatitis E",
-  "Alcoholic hepatitis",
-  "Tuberculosis",
-  "Common Cold",
-  "Pneumonia",
-  "Dimorphic hemmorhoids(piles)",
-  "Heart attack",
-  "Varicose veins",
-  "Hypothyroidism",
-  "Hyperthyroidism",
-  "Hypoglycemia",
-  "Osteoarthristis",
-  "Arthritis",
-  "(vertigo) Paroymsal Positional Vertigo",
-  "Acne",
-  "Urinary tract infection",
-  "Psoriasis",
-  "Impetigo",
-];
 
 function EditDoctor() {
   const route = useRoute();
@@ -281,7 +224,7 @@ function EditDoctor() {
                 setData({ ...data, specialist: itemValue })
               }
             >
-              {optionSpecialist.map((item, index) => (
+              {Common.listData().specialist.map((item, index) => (
                 <Picker.Item
                   key={index}
                   label={item.value}
@@ -317,7 +260,7 @@ function EditDoctor() {
                   justifyContent: "center",
                 }}
               >
-                {optionSicks.map((item) => {
+                {Common.listData().listSicks.map((item) => {
                   const checkExist = data.sicks.filter((sick) => sick === item);
                   return (
                     <TouchableOpacity

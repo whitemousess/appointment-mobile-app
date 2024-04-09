@@ -35,7 +35,7 @@ const ModalPost = ({ visible, onClose }) => {
       setData({ ...data, imageUrl: result.assets[0].uri });
     }
   };
-
+  
   const handleChange = (text) => {
     if (text.trimLeft() === text) {
       setData({ ...data, status: text });

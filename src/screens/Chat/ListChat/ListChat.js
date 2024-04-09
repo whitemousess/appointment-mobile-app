@@ -1,71 +1,116 @@
-import { useCallback, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FlatList,
-  RefreshControl,
-  Text,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
+import * as aiService from '~/services/aiService'
 import ItemChat from "./ItemChat";
-import doctor from "~/assets/img/doctor.jpg";
 
 function ListChat() {
-  const [refreshing, setRefreshing] = useState(false);
+  const [data, setData] = useState([])
+  const [message, setMessage] = useState("");
+  const [submit, setSubmit] = useState(false);
+  const flatListRef = useRef(null);
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
-  }, []);
-
-  const dataChat = [
-    { id: 1, imageUrl: doctor, fullName: "Doctor 1" },
-    { id: 2, imageUrl: doctor, fullName: "Doctor 2" },
-    { id: 3, imageUrl: doctor, fullName: "Doctor 3" },
-    { id: 4, imageUrl: doctor, fullName: "Doctor 4" },
-    { id: 5, imageUrl: doctor, fullName: "Doctor 5" },
-    { id: 6, imageUrl: doctor, fullName: "Doctor 6" },
-    { id: 7, imageUrl: doctor, fullName: "Doctor 7" },
-    { id: 8, imageUrl: doctor, fullName: "Doctor 6" },
-    { id: 9, imageUrl: doctor, fullName: "Doctor 7" },
-    { id: 10, imageUrl: doctor, fullName: "Doctor 6" },
-    { id: 11, imageUrl: doctor, fullName: "Doctor 7" },
-  ];
-  const [moreData, setMoreData] = useState(dataChat.slice(0, 10));
-
-  const handleLoadMore = () => {
-    const currentLength = moreData.length;
-    const nextData = dataChat.slice(currentLength, currentLength + 5);
-    setMoreData([...moreData, ...nextData]);
+  const handleChange = (text) => {
+    if (text.trimLeft() === text) {
+      setMessage(text);
+      if (text !== "") {
+        setSubmit(true);
+      } else {
+        setSubmit(false);
+      }
+    }
   };
+
+  const handleSubmit = () => {
+    if (submit) {
+      setSubmit(false);
+      setMessage("");
+
+      if (message !== "") {
+        aiService.sentChat({ data: message })
+          .then((res) => {
+            setData([...data, { message: res.data }]);
+          })
+          .catch((error) => {
+            console.error("Error while fetching chat:", error);
+          });
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToEnd();
+    }
+  }, [data]);
 
   const renderItem = (item) => {
     return <ItemChat data={item} />;
   };
 
   return (
-    <View
-      style={{
-        borderTopWidth: 1,
-        borderColor: "#ccc",
-        marginHorizontal: 10,
-        marginBottom: 60,
-      }}
-    >
-      <FlatList
-      style={{ height: "100%" }}
-        data={moreData}
-        renderItem={({ item }) => renderItem(item)}
-        keyExtractor={(item) => item.id.toString()}
-        showsVerticalScrollIndicator={false}
-        onEndReached={handleLoadMore}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      />
-    </View>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+      <View
+        style={{
+          borderTopWidth: 1,
+          borderColor: "#ccc",
+          marginHorizontal: 10,
+          marginBottom: 60,
+        }}
+      >
+
+        <FlatList 
+        ref={flatListRef}
+          style={{ height: "90%" }}
+          data={data}
+          renderItem={({ item }) => renderItem(item)}
+          keyExtractor={(item, index) => index}
+          showsVerticalScrollIndicator={false}
+        />
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <TextInput
+            placeholder="Hãy gửi tin nhắn ..."
+            value={message}
+            onChangeText={(text) => handleChange(text)}
+            style={{
+              width: "88%",
+              borderWidth: 1,
+              borderColor: "#e9e9e9",
+              borderRadius: 10,
+              paddingHorizontal: 10,
+              paddingVertical: 14,
+            }}
+          />
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={handleSubmit}
+            style={{ padding: 12 }}
+          >
+            <Ionicons
+              name="send"
+              size={24}
+              color={submit ? "#3468C0" : "#ccc"}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 

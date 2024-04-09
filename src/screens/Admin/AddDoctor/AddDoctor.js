@@ -17,62 +17,7 @@ import ButtonCustom from "~/components/ButtonCustom";
 import SafeView from "~/components/SafeView";
 import HeaderGoBack from "~/components/HeaderGoBack";
 import * as userService from "~/services/userService";
-
-const optionSpecialist = [
-  {
-    value: "Khoa thần kinh",
-  },
-  {
-    value: "Khoa tai mũi họng",
-  },
-  {
-    value: "Khoa tim mạch",
-  },
-];
-
-const optionSicks = [
-  "Fungal infection",
-  "Allergy",
-  "GERD",
-  "Chronic cholestasis",
-  "Drug Reaction",
-  "Peptic ulcer diseae",
-  "AIDS",
-  "Diabetes",
-  "Gastroenteritis",
-  "Bronchial Asthma",
-  "Hypertension",
-  "Migraine",
-  "Cervical spondylosis",
-  "Paralysis (brain hemorrhage)",
-  "Jaundice",
-  "Malaria",
-  "Chicken pox",
-  "Dengue",
-  "Typhoid",
-  "hepatitis A",
-  "Hepatitis B",
-  "Hepatitis C",
-  "Hepatitis D",
-  "Hepatitis E",
-  "Alcoholic hepatitis",
-  "Tuberculosis",
-  "Common Cold",
-  "Pneumonia",
-  "Dimorphic hemmorhoids(piles)",
-  "Heart attack",
-  "Varicose veins",
-  "Hypothyroidism",
-  "Hyperthyroidism",
-  "Hypoglycemia",
-  "Osteoarthristis",
-  "Arthritis",
-  "(vertigo) Paroymsal Positional Vertigo",
-  "Acne",
-  "Urinary tract infection",
-  "Psoriasis",
-  "Impetigo",
-];
+import { Common } from "~/Common/Common";
 
 function AddDoctor() {
   const [data, setData] = useState({
@@ -80,7 +25,7 @@ function AddDoctor() {
     password: "",
     rePassword: "",
     gender: 0,
-    specialist: optionSpecialist[0].value,
+    specialist: Common.listData().specialist[0].value,
     fullName: "",
     email: "",
     phone: "",
@@ -327,7 +272,7 @@ function AddDoctor() {
                 setData({ ...data, specialist: itemValue })
               }
             >
-              {optionSpecialist.map((item, index) => (
+              {Common.listData().specialist.map((item, index) => (
                 <Picker.Item
                   key={index}
                   label={item.value}
@@ -364,13 +309,13 @@ function AddDoctor() {
                   justifyContent: "center",
                 }}
               >
-                {optionSicks.map((item) => {
+                {Common.listData().listSicks.map((item) => {
                   const checkExist = data.sicks.filter((sick) => sick === item);
                   return (
                     <TouchableOpacity
                       key={item}
                       style={{
-                        width: 150,
+                        width: 130,
                         flexDirection: "row",
                         justifyContent: "center",
                         paddingVertical: 14,

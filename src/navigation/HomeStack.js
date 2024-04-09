@@ -18,7 +18,7 @@ function HomeStack() {
       <Stack.Screen name="DetailPost" component={DetailPost} />
       <Stack.Screen name="DetailDoctor" component={DetailDoctor} />
       <Stack.Screen name="ListDoctor" component={ListDoctors} />
-      <Stack.Screen name="Chat" component={Chat} />
+      <Stack.Screen name="Chat" component={Chat}/>
       <Stack.Screen name="DetailChat" component={DetailChat} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Appointment" component={Appointment} />
