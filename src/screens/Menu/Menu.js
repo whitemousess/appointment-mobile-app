@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import SafeView from "~/components/SafeView";
-import { AuthContext } from "~/shared/AuthProvider";
+import { AuthContext } from "~/Common/AuthProvider";
 
 function Menu() {
   const navigation = useNavigation();

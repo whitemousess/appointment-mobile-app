@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { AuthContext } from "~/shared/AuthProvider";
+import { AuthContext } from "~/Common/AuthProvider";
 import AdminStack from "./AdminStack";
 import UserStack from "./UserStack";
 

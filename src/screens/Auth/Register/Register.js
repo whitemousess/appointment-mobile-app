@@ -13,7 +13,7 @@ import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
 
 import InputCustom from "~/components/InputCustom";
 import ButtonCustom from "~/components/ButtonCustom";
-import { AuthContext } from "~/shared/AuthProvider";
+import { AuthContext } from "~/Common/AuthProvider";
 import SafeView from "~/components/SafeView";
 
 function Register({ navigation }) {

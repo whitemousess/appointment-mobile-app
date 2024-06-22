@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useContext } from "react";
 import { Image, StatusBar, Text, TouchableOpacity, View } from "react-native";
 
-import { AuthContext } from "~/shared/AuthProvider";
+import { AuthContext } from "~/Common/AuthProvider";
 import user from "~/assets/img/user.png";
 
 function HeaderScreen() {

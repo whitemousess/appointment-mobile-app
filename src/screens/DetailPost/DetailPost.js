@@ -18,7 +18,7 @@ import Toast from "react-native-toast-message";
 import SafeView from "~/components/SafeView";
 import Comment from "./Comment";
 
-import { AuthContext } from "~/shared/AuthProvider";
+import { AuthContext } from "~/Common/AuthProvider";
 import * as recentPostService from "~/services/recentPostService";
 import * as commentService from "~/services/commentService";
 import user from "~/assets/img/user.png";

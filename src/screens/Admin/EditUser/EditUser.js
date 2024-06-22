@@ -14,7 +14,7 @@ import { useRoute } from "@react-navigation/native";
 
 import InputCustom from "~/components/InputCustom";
 import ButtonCustom from "~/components/ButtonCustom";
-import { AuthContext } from "~/shared/AuthProvider";
+import { AuthContext } from "~/Common/AuthProvider";
 import SafeView from "~/components/SafeView";
 import HeaderGoBack from "~/components/HeaderGoBack";
 import UploadImage from "~/components/UploadImage";

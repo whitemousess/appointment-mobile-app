@@ -1,7 +1,7 @@
 import { ScrollView } from "react-native";
 import Item from "./Item";
 import { useContext } from "react";
-import { AuthContext } from "~/shared/AuthProvider";
+import { AuthContext } from "~/Common/AuthProvider";
 
 function ItemDoctor({ data = [] }) {
   const { currentInfo } = useContext(AuthContext);

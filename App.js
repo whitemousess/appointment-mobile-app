@@ -1,6 +1,6 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import AppNav from "~/navigation/AppNav";
-import { AuthProvider } from "~/shared/AuthProvider";
+import { AuthProvider } from "~/Common/AuthProvider";
 
 function App() {
   return (

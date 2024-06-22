@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
-import { AuthContext } from "~/shared/AuthProvider";
+import { AuthContext } from "~/Common/AuthProvider";
 import ItemDoctor from "./ItemDoctor";
 import RecentPost from "~/components/RecentPost";
 import HeaderScreen from "~/components/HeaderScreen";

@@ -18,7 +18,7 @@ import { Zocial } from "@expo/vector-icons";
 
 import SafeView from "~/components/SafeView";
 import HeaderGoBack from "~/components/HeaderGoBack";
-import { AuthContext } from "~/shared/AuthProvider";
+import { AuthContext } from "~/Common/AuthProvider";
 import * as appointmentService from "~/services/appointmentService";
 import Toast from "react-native-toast-message";
 import user from "~/assets/img/user.png";

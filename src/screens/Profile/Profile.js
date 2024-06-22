@@ -1,6 +1,6 @@
 import { RefreshControl, ScrollView, Text, View } from "react-native";
 import { useCallback, useContext, useState } from "react";
-import { AuthContext } from "~/shared/AuthProvider";
+import { AuthContext } from "~/Common/AuthProvider";
 import { useFocusEffect } from "@react-navigation/native";
 
 import SafeView from "~/components/SafeView";

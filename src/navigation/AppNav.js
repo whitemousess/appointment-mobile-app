@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 
-import { AuthContext } from "~/shared/AuthProvider";
+import { AuthContext } from "~/Common/AuthProvider";
 import Authorization from "./Authorization";
 import AuthStack from "./AuthStack";
 import { ActivityIndicator, View } from "react-native";

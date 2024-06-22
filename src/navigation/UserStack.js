@@ -5,7 +5,7 @@ import { AntDesign, Entypo, FontAwesome, Fontisto } from "@expo/vector-icons";
 import MenuStack from "./MenuStack";
 import HomeStack from "./HomeStack";
 import AppointmentStack from "./AppointmentStack";
-import { AuthContext } from "~/shared/AuthProvider";
+import { AuthContext } from "~/Common/AuthProvider";
 import History from "~/screens/History";
 import ListAppointment from "~/screens/ListAppointment";
 import { Keyboard, Platform } from "react-native";

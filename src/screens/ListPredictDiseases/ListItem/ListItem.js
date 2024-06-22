@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { FlatList, RefreshControl } from "react-native";
 
 import Item from "./Item";
-import { AuthContext } from "~/shared/AuthProvider";
+import { AuthContext } from "~/Common/AuthProvider";
 import ClientEmpty from "~/components/ClientEmpty";
 
 function ListItem({ data = [], onRefresh, refreshing }) {

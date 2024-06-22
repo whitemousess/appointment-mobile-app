@@ -4,7 +4,7 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { View, Image, Text, TouchableOpacity } from "react-native";
-import { AuthContext } from "~/shared/AuthProvider";
+import { AuthContext } from "~/Common/AuthProvider";
 import user from "~/assets/img/user.png";
 
 const CustomDrawerContent = (props) => {
